@@ -19,6 +19,10 @@ public class Selectable : MonoBehaviour
 		}
 	}
 
+	public virtual void OrderGround( Vector3 location ) { }
+
+	public virtual void OrderOrderableTarget( OrderableTarget target ) { }
+
 	void OnEnable()
 	{
 		Selection.selectables.Add( this );

@@ -50,7 +50,7 @@ public class Selection : MonoBehaviour
 		{
 			Ray mouseToWorldRay = Camera.main.ScreenPointToRay( Input.mousePosition );
 			RaycastHit hitInfo;
-			if ( Physics.Raycast( mouseToWorldRay, out hitInfo, selectionLayerMask ) )
+			if ( Physics.Raycast( mouseToWorldRay, out hitInfo, 1000f, selectionLayerMask, QueryTriggerInteraction.Ignore ) )
 			{
 				Selectable s = hitInfo.collider.GetComponentInParent<Selectable>();
 				if ( s != null )
