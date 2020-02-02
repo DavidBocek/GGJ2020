@@ -266,7 +266,8 @@ MonoBehaviour:
   occupiedWorkTargetColor: {r: 0, g: 0, b: 0, a: 0}
   workTargetObjs:
   - {fileID: 2986959944667341875}
-  workFxObj: {fileID: 0}
+  workFxObj: {fileID: 1494846531119678429, guid: c9217a58ef6b254489a036e879579bd9,
+    type: 3}
   renderersToSwapOnDeath: []
   deathMaterial: {fileID: 0}
   smokeFxObj: {fileID: 0}
