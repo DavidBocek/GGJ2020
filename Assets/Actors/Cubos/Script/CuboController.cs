@@ -89,6 +89,13 @@ public class CuboController : Selectable
 				}
 				break;
 			case CuboState.MOVING_TO_WORK:
+				NegaCube negaCube = m_orderableTarget.GetComponent<NegaCube>();
+				if (negaCube != null && Vector3.Distance(m_moveTarget, transform.position) <= negaCube.sacrificeDist)
+				{
+					m_orderableTarget.OnWork( this );
+					SwitchState( CuboState.IDLE );
+				}
+
 				if ( Vector3.Distance( m_moveTarget, transform.position ) < workTargetDistance )
 				{
 					m_orderableTarget.OccupyWorkTarget( m_workTarget );
@@ -101,7 +108,8 @@ public class CuboController : Selectable
 				{
 					m_orderableTarget.OnWork( this );
 					m_lastWorkTime = Time.time;
-					OnDoWork();
+					if (m_orderableTarget.GetComponent<NegaCube>() == null)
+						OnDoWork();
 				}
 				break;
 			default:

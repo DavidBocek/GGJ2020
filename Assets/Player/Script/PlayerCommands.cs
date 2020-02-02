@@ -138,6 +138,14 @@ public class PlayerCommands : MonoBehaviour
 
 					List<WorkTarget> workTargets = target.GetOpenWorkTargets();
 
+					if ( target.GetComponent<NegaCube>() != null)
+					{
+						foreach( Selectable unit in workingUnits)
+						{
+							unit.OrderOrderableTarget( target, target.GetOpenWorkTargets()[0] );
+						}
+					}
+
 					foreach ( KeyValuePair<Selectable, WorkTarget> kvp in CalculateMovementPointsForOrderable( workingUnits, workTargets ) )
 					{
 						kvp.Key.OrderOrderableTarget( target, kvp.Value );
@@ -499,6 +507,12 @@ public class PlayerCommands : MonoBehaviour
 		spawnPos.y = 1f;
 		GameObject newCubo = (GameObject)Instantiate( cuboObj, spawnPos, Quaternion.identity );
 		m_curCuboCount++;
+		UpdateCubosUI();
+	}
+
+	public void OnCuboDestroyed()
+	{
+		m_curCuboCount--;
 		UpdateCubosUI();
 	}
 

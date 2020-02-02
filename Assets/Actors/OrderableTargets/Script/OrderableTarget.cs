@@ -63,6 +63,9 @@ public class OrderableTarget : MonoBehaviour
 
 	public virtual void OnWork( CuboController user )
 	{
+		if ( workFxObj == null )
+			return;
+
 		Instantiate( workFxObj, user.transform.position + Vector3.up * 4f, Quaternion.LookRotation( Vector3.up, Vector3.left ) );
 	}
 
