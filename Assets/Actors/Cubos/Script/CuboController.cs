@@ -29,6 +29,7 @@ public class CuboController : Selectable
 	public float workTargetDistance;
 	public float workRotSnapLerp;
 	public float workCooldown;
+	private float m_lastWorkTime;
 	private OrderableTarget m_orderableTarget;
 	private WorkTarget m_workTarget;
 	public OrderableTarget GetOrderableTarget() { return m_orderableTarget; }
@@ -77,6 +78,12 @@ public class CuboController : Selectable
 				break;
 			case CuboState.WORKING:
 				transform.rotation = Quaternion.Slerp( transform.rotation, m_workTarget.obj.transform.rotation, workRotSnapLerp * Time.deltaTime );
+				if ( Time.time > m_lastWorkTime + workCooldown )
+				{
+					m_orderableTarget.OnWork( this );
+					m_lastWorkTime = Time.time;
+					Debug.Log( "(" + gameObject.name + ") DID WORK!" );
+				}
 				break;
 			default:
 				throw new UnityException( "Unrecognized cubo state: " + m_state );
@@ -103,7 +110,8 @@ public class CuboController : Selectable
 				m_orderableTarget.OccupyWorkTarget( m_workTarget );
 				m_navAgent.Move( m_workTarget.pos - transform.position );
 				m_navAgent.SetDestination( m_workTarget.pos );
-				m_navAgent.isStopped = false;		
+				m_navAgent.isStopped = false;
+				m_lastWorkTime = Time.time + Random.Range(0f, 0.3f);
 				break;
 			default:
 				throw new UnityException( "Unrecognized cubo state: " + m_state );
