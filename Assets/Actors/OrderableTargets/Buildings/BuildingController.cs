@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BuildingController : OrderableTarget
 {
+    public Transform center;
     // Start is called before the first frame update
     void Start()
     {
