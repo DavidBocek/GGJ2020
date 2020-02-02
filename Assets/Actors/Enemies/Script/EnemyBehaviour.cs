@@ -21,7 +21,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     private eAIState m_currentState;
     private GameObject m_target;
-    private List<GameObject> m_potentialTargets;
+    private List<GameObject> m_potentialTargets = new List<GameObject>();
     private float m_nextGoodAttackTime;
 
     // Start is called before the first frame update
@@ -41,25 +41,15 @@ public class EnemyBehaviour : MonoBehaviour
                 m_potentialTargets.Remove( target );
             }
         }
+
+        if ( m_target == null )
+        {
+            m_target = GetRandomTarget();
+        }
     }
 
     private void EnterState( eAIState newState )
     {
-        eAIState oldState = m_currentState;
-
-        /*
-        switch ( newState )
-        {
-            case eAIState.IDLE:
-                m_navMeshAgent.isStopped = true;
-
-                break;
-            case eAIState.MOVING:
-                m_navMeshAgent.isStopped = false;
-                break;
-        }
-        */
-
         m_currentState = newState;
     }
 
@@ -94,7 +84,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if ( ! m_target.GetComponent<Health>().IsAlive() )
         {
-            m_target = m_potentialTargets[Random.Range( 0, m_potentialTargets.Count )];
+            m_target = GetRandomTarget();
         }
 
         switch ( m_currentState )
@@ -139,5 +129,10 @@ public class EnemyBehaviour : MonoBehaviour
             // attack anim stuff
             DamageTarget();
         }
+    }
+
+    private GameObject GetRandomTarget()
+    {
+        return m_potentialTargets[Random.Range( 0, m_potentialTargets.Count )];
     }
 }
