@@ -1,17 +1,29 @@
-﻿using System.Collections;
+﻿using MEC;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class EnemyBehaviour : MonoBehaviour
 {
 
-    [Header("Gameplay")]
+    [Header( "Gameplay" )]
     public float moveSpeed;
     public float angularVelocity;
     public float slerpScale = 30.0f;
     public float timeBetweenAttacks;
     public int attackDamage;
     public float tooCloseThreshold;
+
+    [Header( "Laser Visuals" )]
+    public Transform muzzlePos;
+    public LineRenderer laserFx;
+    public float attackForwardRand;
+    public float attackRightRand;
+    public float attackLaserTime;
+    public float attackLaserEndWidth;
+
+    public GameObject visuals;
 
     private enum eAIState
     {
@@ -120,6 +132,9 @@ public class EnemyBehaviour : MonoBehaviour
                 break;
             case eAIState.ATTACK:
                 transform.rotation = Quaternion.LookRotation( m_vecToTarget, Vector3.up );
+                //visuals.transform.localRotation *= Quaternion.Euler( 0, 500 * Time.deltaTime, 0 );
+
+                //transform.Rotate( transform.forward * 50 * Time.deltaTime, Space.Self );
                 transform.position = GetNextPositionOnCircle();
 
                 TryAttackTarget();
@@ -150,7 +165,7 @@ public class EnemyBehaviour : MonoBehaviour
         if ( Time.time >= m_nextGoodAttackTime )
         {
             m_nextGoodAttackTime = Time.time + timeBetweenAttacks;
-            // attack anim stuff
+            Timing.RunCoroutineSingleton( _PlayAttackFX(), gameObject, "_PlayAttackFX", SingletonBehavior.Overwrite );
             DamageTarget();
         }
     }
@@ -192,7 +207,42 @@ public class EnemyBehaviour : MonoBehaviour
         transform.position += positionAdjustment;
     }
 
-	public void OnDeath()
+    public IEnumerator<float> _PlayAttackFX()
+    {
+        laserFx.gameObject.SetActive( true );
+        //muzzleFx.gameObject.SetActive( true );
+
+        Health enemyHealth = m_target.GetComponent<Health>();
+        if ( enemyHealth == null )
+            yield return 0f;
+
+        Vector3 targetPos = m_orbitCenterPoint.transform.position;
+        float startTime = Time.time;
+        Vector3 offset = m_orbitCenterPoint.forward * Random.Range( -attackForwardRand, attackForwardRand )
+                    + m_orbitCenterPoint.right * Random.Range( -attackRightRand, attackRightRand )
+                    + m_orbitCenterPoint.up;
+
+        targetPos += offset;
+
+        while ( Time.time < startTime + attackLaserTime )
+        {
+            if ( m_currentState != eAIState.ATTACK )
+                break;
+
+            laserFx.SetPosition( 0, muzzlePos.position );
+
+            laserFx.SetPosition( 1, targetPos );
+
+            //laserFx.widthMultiplier = MathUtil.RemapClamped( Time.time, startTime, startTime + attackLaserTime, 1f, attackLaserEndWidth );
+
+            yield return Timing.WaitForOneFrame;
+        }
+
+        laserFx.gameObject.SetActive( false );
+        //muzzleFx.gameObject.SetActive( false );
+    }
+
+    public void OnDeath()
 	{
 		Destroy( gameObject );
 	}
