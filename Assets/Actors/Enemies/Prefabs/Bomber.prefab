@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1953354094}
   - component: {fileID: 1953354093}
   m_Layer: 0
-  m_Name: Fighter
+  m_Name: Bomber
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,19 +50,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dfa9f5bb53d56d429a2808e55e1101b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 50
-  angularVelocity: 1
+  moveSpeed: 30
+  angularVelocity: 0.7
   slerpScale: 10
-  timeBetweenAttacks: 2
+  timeBetweenAttacks: 4
   attackDamage: 2
   tooCloseThreshold: 10
   targetTags:
   - Building
+  - Turret
   muzzlePos: {fileID: 2999486273702408661}
   laserFx: {fileID: 4467298903194589893}
   attackForwardRand: 4
   attackRightRand: 4
-  attackLaserTime: 0.15
+  attackLaserTime: 0.25
   attackLaserEndWidth: 1
   visuals: {fileID: 2688338932734888122}
 --- !u!114 &8798017727898238622
@@ -107,7 +108,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 1, z: 2}
+  m_Size: {x: 4, y: 1.5, z: 2.5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4870916707142252430
 GameObject:
@@ -263,22 +264,27 @@ PrefabInstance:
     - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
         type: 3}
       propertyPath: m_Parameters.colorGradient.key0.g
-      value: 0.03915456
-      objectReference: {fileID: 0}
-    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.b
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
         type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.g
-      value: 0.55372715
+      propertyPath: m_Parameters.colorGradient.key0.b
+      value: 0.46264267
       objectReference: {fileID: 0}
     - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
         type: 3}
-      propertyPath: m_Parameters.widthMultiplier
-      value: 0.4
+      propertyPath: m_Parameters.colorGradient.key1.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.r
+      value: 0.58017635
+      objectReference: {fileID: 0}
+    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.b
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe5720226e2385c4a8aeb6ee1941f8e0, type: 3}
@@ -361,11 +367,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 722c5f37abcf3874fa822f03a3260a36,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 165
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 722c5f37abcf3874fa822f03a3260a36,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 722c5f37abcf3874fa822f03a3260a36,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 125
+      objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: 722c5f37abcf3874fa822f03a3260a36,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: d40a2313493e9a94181647f2a8042ac0, type: 2}
+      objectReference: {fileID: 2100000, guid: 915ce1f3c58eb694399f72a68c0f0b2c, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 722c5f37abcf3874fa822f03a3260a36, type: 3}
 --- !u!1 &2688338932734888122 stripped

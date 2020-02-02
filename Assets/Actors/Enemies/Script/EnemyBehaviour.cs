@@ -14,6 +14,7 @@ public class EnemyBehaviour : MonoBehaviour
     public float timeBetweenAttacks;
     public int attackDamage;
     public float tooCloseThreshold;
+	public string[] targetTags;
 
     [Header( "Laser Visuals" )]
     public Transform muzzlePos;
@@ -49,16 +50,30 @@ public class EnemyBehaviour : MonoBehaviour
 
     private void UpdateTargetList()
     {
-        m_potentialTargets = new List<GameObject>( GameObject.FindGameObjectsWithTag( "Building" ) );
+		m_potentialTargets = new List<GameObject>();
+		foreach ( string tag in targetTags)
+		{
+			foreach ( GameObject obj in GameObject.FindGameObjectsWithTag( tag ) )
+			{
+				m_potentialTargets.Add( obj );
+			}
+		}
 
-        foreach( GameObject target in new List<GameObject>( m_potentialTargets ) )
+		List<GameObject> targetsCopy = new List<GameObject>( m_potentialTargets );
+		foreach ( GameObject target in  targetsCopy)
         {
-            if ( ! target.GetComponent<Health>().IsAlive() )
+			Health health = target.GetComponent<Health>();
+            if ( health == null || !health.IsAlive() )
             {
                 m_potentialTargets.Remove( target );
             }
         }
 
+		if (m_potentialTargets.Count == 0)
+		{
+			GameObject[] objs = GameObject.FindGameObjectsWithTag( targetTags[0] );
+			m_potentialTargets.Add(objs[Random.Range( 0, objs.Length )]);
+		}
         if ( m_target == null )
         {
             GetRandomTarget();
@@ -183,7 +198,7 @@ public class EnemyBehaviour : MonoBehaviour
     private void GetRandomTarget()
     {
         m_target = m_potentialTargets[Random.Range( 0, m_potentialTargets.Count )];
-        m_stoppingDistance = m_target.GetComponent<BuildingController>().GetOrbitRadius();
+        m_stoppingDistance = m_target.GetComponent<BuildingController>().GetOrbitRadius() + Random.Range(-3f, 3f);
         m_orbitCenterPoint = m_target.GetComponent<BuildingController>().GetOrbitCenter();
     }
 

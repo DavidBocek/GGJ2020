@@ -126,7 +126,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-228672
+  m_Name: pb_Mesh-586374
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1842,7 +1842,7 @@ PrefabInstance:
     - target: {fileID: 6578566498444511497, guid: c1827dbd6508dc043abbeca6b23ce71d,
         type: 3}
       propertyPath: maxHealth
-      value: 800
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2805157964804620751, guid: c1827dbd6508dc043abbeca6b23ce71d,
         type: 3}
@@ -1926,7 +1926,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-446028
+  m_Name: pb_Mesh-585442
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3195,7 +3195,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-228942
+  m_Name: pb_Mesh-586972
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
