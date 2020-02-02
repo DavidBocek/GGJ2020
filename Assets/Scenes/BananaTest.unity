@@ -3962,6 +3962,16 @@ PrefabInstance:
       propertyPath: slerpScale
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 1820554509709897999, guid: ead41378b42021c4ba901a824242cea5,
+        type: 3}
+      propertyPath: attackDamage
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1820554509709897999, guid: ead41378b42021c4ba901a824242cea5,
+        type: 3}
+      propertyPath: angularVelocity
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1953354094, guid: ead41378b42021c4ba901a824242cea5, type: 3}
       propertyPath: m_Constraints
       value: 4
