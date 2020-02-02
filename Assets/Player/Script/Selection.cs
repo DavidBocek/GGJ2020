@@ -12,6 +12,10 @@ using System.Linq;
 public class Selection : MonoBehaviour
 {
 	public static List<Selectable> selectables = new List<Selectable>();
+	public static List<Selectable> GetSelected()
+	{
+		return new List<Selectable>( selectables.Where( x => x.isSelected ) );
+	}
 
 	public Canvas canvas;
 	public Image selectionBox;
@@ -129,11 +133,6 @@ public class Selection : MonoBehaviour
 			s.isSelected = value;
 			s.OnSelectionUpdate( value );
 		}
-	}
-
-	List<Selectable> GetSelected()
-	{
-		return new List<Selectable>( selectables.Where( x => x.isSelected ) );
 	}
 
 	void ClearSelected()

@@ -2,10 +2,10 @@
 
 public class Selectable : MonoBehaviour
 {
-	public GameObject selectionRing;
-
+	[HideInInspector]
 	public bool isSelected;
-	
+
+	public GameObject selectionRing;
 
 	public void OnSelectionUpdate( bool selected )
 	{
