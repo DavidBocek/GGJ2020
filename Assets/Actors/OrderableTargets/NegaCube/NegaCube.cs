@@ -11,7 +11,7 @@ public class NegaCube : OrderableTarget
 	public float sacrificeTime;
 	public float sacrificeDist;
 
-
+    public AudioClip sacrificeNoise;
 
 	void Start()
     {
@@ -55,7 +55,9 @@ public class NegaCube : OrderableTarget
 		seq.Join( model.transform.DOScale( 0f, sacrificeTime - 0.4f ).SetEase( Ease.InQuad ).SetDelay( 0.4f ));
 		seq.Play();
 
-		Timing.CallDelayed( sacrificeTime + 0.1f, delegate
+        Camera.main.GetComponent<AudioSource>().PlayOneShot( sacrificeNoise );
+
+        Timing.CallDelayed( sacrificeTime + 0.1f, delegate
 		{
 			Instantiate( workFxObj, transform.position + Vector3.up * 17f, Quaternion.LookRotation( Vector3.up, Vector3.left ) );
 			power++;

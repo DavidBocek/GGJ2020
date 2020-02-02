@@ -78,7 +78,7 @@ public class OrderableTarget : MonoBehaviour
 	public Transform[] smokeFxSpots;
 	public int smokeCount;
 	public int smokeCountRandAdd;
-	public void OnDeath()
+	public virtual void OnDeath()
 	{
 		foreach (Renderer r in renderersToSwapOnDeath )
 		{
@@ -97,7 +97,7 @@ public class OrderableTarget : MonoBehaviour
 		}
 	}
 
-	public void OnRevive()
+	public virtual void OnRevive()
 	{
 		foreach ( Renderer r in renderersToSwapOnDeath )
 		{

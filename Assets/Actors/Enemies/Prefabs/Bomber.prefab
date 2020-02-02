@@ -65,6 +65,9 @@ MonoBehaviour:
   attackRightRand: 4
   attackLaserTime: 0.25
   attackLaserEndWidth: 1
+  laserNoise: {fileID: 8300000, guid: a154e03d702ad7e468620ae1c1ccd103, type: 3}
+  deathNoise: {fileID: 8300000, guid: f6fd73a05a112f749b75026bb62950f7, type: 3}
+  spawnNoise: {fileID: 8300000, guid: 4f39a76dc7ce9fc48a8a27a33f029ecc, type: 3}
   visuals: {fileID: 2688338932734888122}
 --- !u!114 &8798017727898238622
 MonoBehaviour:
@@ -191,15 +194,35 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7740446813714924874}
     m_Modifications:
-    - target: {fileID: 1336694382924207529, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
         type: 3}
-      propertyPath: m_Name
-      value: TurretLaser
+      propertyPath: m_Parameters.colorGradient.key0.r
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1336694382924207529, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
         type: 3}
-      propertyPath: m_IsActive
+      propertyPath: m_Parameters.colorGradient.key0.g
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.b
+      value: 0.46264267
+      objectReference: {fileID: 0}
+    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.r
+      value: 0.58017635
+      objectReference: {fileID: 0}
+    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.b
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1653540697418055937, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
         type: 3}
@@ -256,35 +279,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+    - target: {fileID: 1336694382924207529, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
         type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.r
-      value: 1
+      propertyPath: m_Name
+      value: TurretLaser
       objectReference: {fileID: 0}
-    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+    - target: {fileID: 1336694382924207529, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
         type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.g
+      propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.b
-      value: 0.46264267
-      objectReference: {fileID: 0}
-    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.r
-      value: 0.58017635
-      objectReference: {fileID: 0}
-    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.b
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe5720226e2385c4a8aeb6ee1941f8e0, type: 3}

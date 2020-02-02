@@ -275,6 +275,7 @@ MonoBehaviour:
   canUseOrderableTargets: 1
   canTargetEnemies: 0
   model: {fileID: 6640336677674262529}
+  spawnNoise: {fileID: 8300000, guid: 3cc486cb2413e3e41ae2cb7906b312fb, type: 3}
   unmovingVelocityThreshold: 3
   unmovingTimeCutoff: 0.5
   workTargetDistance: 0.45

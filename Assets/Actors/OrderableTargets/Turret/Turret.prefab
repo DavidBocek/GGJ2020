@@ -639,6 +639,9 @@ MonoBehaviour:
   attackLaserEndWidth: 0.1
   muzzlePos: {fileID: 4511966973876917723}
   muzzleFx: {fileID: 4510119854792521645}
+  turretLaserNoise: {fileID: 8300000, guid: 185bcd28fdebfce45a8d1d58de7eef24, type: 3}
+  turretOnline: {fileID: 8300000, guid: 0b3b107c931a0d042a86fff13dedf3a7, type: 3}
+  turretExplode: {fileID: 8300000, guid: f09ee5c20b3c3ff45abccbd7084212fc, type: 3}
 --- !u!65 &3080752698822262224
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1030,11 +1033,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1442743952819778307}
     m_Modifications:
-    - target: {fileID: 8515704259333293265, guid: f0ea075c62ad64e418243803f3e8f517,
-        type: 3}
-      propertyPath: m_Name
-      value: HealthbarCanvas
-      objectReference: {fileID: 0}
     - target: {fileID: 6242556335158062518, guid: f0ea075c62ad64e418243803f3e8f517,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1139,6 +1137,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8515704259333293265, guid: f0ea075c62ad64e418243803f3e8f517,
+        type: 3}
+      propertyPath: m_Name
+      value: HealthbarCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 8874710729073586358, guid: f0ea075c62ad64e418243803f3e8f517,
         type: 3}
@@ -1475,16 +1478,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1442743952819778307}
     m_Modifications:
-    - target: {fileID: 1336694382924207529, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
-        type: 3}
-      propertyPath: m_Name
-      value: TurretLaser
-      objectReference: {fileID: 0}
-    - target: {fileID: 1336694382924207529, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1653540697418055937, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1538,6 +1531,16 @@ PrefabInstance:
     - target: {fileID: 1653540697418055937, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336694382924207529, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+        type: 3}
+      propertyPath: m_Name
+      value: TurretLaser
+      objectReference: {fileID: 0}
+    - target: {fileID: 1336694382924207529, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

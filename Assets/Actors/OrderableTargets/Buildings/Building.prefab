@@ -1106,6 +1106,8 @@ MonoBehaviour:
   healPerWork: 10
   center: {fileID: 3912056889043357288}
   orbitRadius: 30
+  explodeNoise: {fileID: 8300000, guid: 38218253b54a63d4ab39a855748777ac, type: 3}
+  repairNoise: {fileID: 8300000, guid: c05452931c4574844a33eb2bf123d59f, type: 3}
 --- !u!114 &6578566498444511497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2951,11 +2953,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3396882188457958397}
     m_Modifications:
-    - target: {fileID: 8515704259333293265, guid: f0ea075c62ad64e418243803f3e8f517,
-        type: 3}
-      propertyPath: m_Name
-      value: HealthbarCanvas
-      objectReference: {fileID: 0}
     - target: {fileID: 6242556335158062518, guid: f0ea075c62ad64e418243803f3e8f517,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3060,6 +3057,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8515704259333293265, guid: f0ea075c62ad64e418243803f3e8f517,
+        type: 3}
+      propertyPath: m_Name
+      value: HealthbarCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 8874710729073586358, guid: f0ea075c62ad64e418243803f3e8f517,
         type: 3}

@@ -10,6 +10,9 @@ public class BuildingController : OrderableTarget
     public Transform center;
     public float orbitRadius;
 
+    public AudioClip explodeNoise;
+    public AudioClip repairNoise;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +42,13 @@ public class BuildingController : OrderableTarget
 			return;
 
 		m_health.Heal( healPerWork );
-		base.OnWork( user );
+        Camera.main.GetComponent<AudioSource>().PlayOneShot( repairNoise );
+        base.OnWork( user );
 	}
+
+    public void OnDeath()
+    {
+        Camera.main.GetComponent<AudioSource>().PlayOneShot( explodeNoise );
+
+    }
 }
