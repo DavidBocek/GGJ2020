@@ -126,7 +126,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-591012
+  m_Name: pb_Mesh-673576
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -289,7 +289,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-591582
+  m_Name: pb_Mesh-674146
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1357,7 +1357,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-590214
+  m_Name: pb_Mesh-672732
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1774,7 +1774,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-589836
+  m_Name: pb_Mesh-672354
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2261,7 +2261,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-591572
+  m_Name: pb_Mesh-674136
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3354,7 +3354,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-591378
+  m_Name: pb_Mesh-673942
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3630,7 +3630,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-591368
+  m_Name: pb_Mesh-673932
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4066,7 +4066,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh592092
+  m_Name: pb_Mesh659316
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4770,6 +4770,11 @@ PrefabInstance:
         type: 3}
       propertyPath: spawnerSpawns.Array.data[0].time
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255259822411835217, guid: 936fe154256a4ea478b6b69d3f2e6245,
+        type: 3}
+      propertyPath: spawnerSpawns.Array.data[1].spawnerObj
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 936fe154256a4ea478b6b69d3f2e6245, type: 3}
