@@ -12,9 +12,13 @@ public class PlayerCommands : MonoBehaviour
 	public GameObject moveOrderUIPrefab;
 	public float moveOrderFormationOffsetDist;
 	public LayerMask moveOrderFormationBlockerMask;
-	public float formationScoreDistWeight;
-	public float formationScoreAngleWeight;
+	public float moveDistScoreMultiplier;
+	public float moveAngleScoreMultiplier;
 	private const bool DEBUG_MOVE_FORMATION = true;
+
+	[Header( "Work" )]
+	public float workMoveDistScoreMultiplier;
+	public float workMoveAngleScoreMultiplier;
 
 	private void Start()
 	{
@@ -31,7 +35,7 @@ public class PlayerCommands : MonoBehaviour
 		if ( !Input.GetButtonDown( "Order" ) )
 			return;
 
-		if ( Selection.selectables.Count == 0 )
+		if ( Selection.GetSelected().Count == 0 )
 			return;
 
 		Ray mouseToWorldRay = Camera.main.ScreenPointToRay( Input.mousePosition );
@@ -42,25 +46,42 @@ public class PlayerCommands : MonoBehaviour
 			switch ( layer )
 			{
 				case "Ground":
-					if ( Selection.GetSelected().Count == 0 )
+					List<Selectable> moveableUnits = new List<Selectable>();
+					foreach ( Selectable selectable in Selection.GetSelected() )
+					{
+						if ( selectable.canMove )
+							moveableUnits.Add( selectable );
+					}
+					if ( moveableUnits.Count == 0 )
 						break;
 
 					Vector3 groundedPoint = hitInfo.point;
 					groundedPoint.y = 1f;
 					GameObject orderUI = (GameObject)Instantiate( moveOrderUIPrefab, groundedPoint + Vector3.up * 0.01f, Quaternion.LookRotation( Vector3.down ) );
 
-					foreach ( KeyValuePair<Selectable, Vector3> order in CalculateFormationMovementPoints( Selection.GetSelected(), groundedPoint ) )
+					foreach ( KeyValuePair<Selectable, Vector3> order in CalculateFormationMovementPoints( moveableUnits, groundedPoint ) )
 					{
 						order.Key.OrderGround( order.Value );
 					}
 
 					break;
 				case "OrderableCollision":
-					OrderableTarget target = hitInfo.collider.gameObject.GetComponentInChildren<OrderableTarget>();
-
+					List<Selectable> workingUnits = new List<Selectable>();
 					foreach ( Selectable selectable in Selection.GetSelected() )
 					{
-						selectable.OrderOrderableTarget( target );
+						if ( selectable.canMove )
+							workingUnits.Add( selectable );
+					}
+					if ( workingUnits.Count == 0 )
+						break;
+
+					OrderableTarget target = hitInfo.collider.gameObject.GetComponentInChildren<OrderableTarget>();
+
+					List<WorkTarget> workTargets = target.GetOpenWorkTargets();
+
+					foreach ( KeyValuePair<Selectable, WorkTarget> kvp in CalculateMovementPointsForOrderable( workingUnits, workTargets ) )
+					{
+						kvp.Key.OrderOrderableTarget( target, kvp.Value );
 					}
 					break;
 				default:
@@ -79,8 +100,6 @@ public class PlayerCommands : MonoBehaviour
 
 	private Dictionary<Selectable, Vector3> CalculateFormationMovementPoints( List<Selectable> movers, Vector3 target )
 	{
-		Dictionary<Selectable, Vector3> res = new Dictionary<Selectable, Vector3>();
-
 		//build grid of valid offset points
 		List<Vector2> offsetGrid = new List<Vector2>();
 		if ( DEBUG_MOVE_FORMATION )
@@ -166,7 +185,6 @@ public class PlayerCommands : MonoBehaviour
 			}
 		}
 
-
 		//build offsets of current movers
 		List<FormationMovementAtom> moverAtoms = new List<FormationMovementAtom>();
 		Vector3 avgPoint = Vector3.zero;
@@ -190,7 +208,7 @@ public class PlayerCommands : MonoBehaviour
 		}
 
 		//distribute target points
-		Assert.IsTrue( offsetGrid.Count >= movers.Count, "Not enough formation offsets for number of movers!" );
+		Dictionary<Selectable, Vector3> res = new Dictionary<Selectable, Vector3>();
 		float score;
 		float bestScore;
 		FormationMovementAtom bestAtom = moverAtoms[0];
@@ -202,8 +220,8 @@ public class PlayerCommands : MonoBehaviour
 			bestScore = Mathf.NegativeInfinity;
 			foreach ( FormationMovementAtom atom in prunedMoverAtoms )
 			{
-				score = Mathf.Abs( atom.distFromCenter - targetOffset.magnitude ) * -formationScoreDistWeight;
-				score += Vector2.Dot( atom.vectorFromCenter, targetOffset ) * formationScoreAngleWeight;
+				score = Mathf.Abs( atom.distFromCenter - targetOffset.magnitude ) * -moveDistScoreMultiplier;
+				score += Vector2.Dot( atom.vectorFromCenter, targetOffset ) * moveAngleScoreMultiplier;
 				if ( score > bestScore )
 				{
 					bestScore = score;
@@ -225,4 +243,105 @@ public class PlayerCommands : MonoBehaviour
 
 		return res;
 	}
+
+
+	private Dictionary<Selectable, WorkTarget> CalculateMovementPointsForOrderable( List<Selectable> movers, List<WorkTarget> targets )
+	{
+		Dictionary<Selectable, WorkTarget> res = new Dictionary<Selectable, WorkTarget>();
+		List<Selectable> prunedMovers = new List<Selectable>( movers );
+		int count = 0;
+		float score;
+		float bestScore;
+		Selectable bestMover = movers[0];
+		Vector3 target;
+		foreach ( WorkTarget workTarget in targets )
+		{
+			target = workTarget.pos;
+			bestScore = Mathf.NegativeInfinity;
+			foreach ( Selectable mover in prunedMovers )
+			{
+				score = -(mover.transform.position - target).sqrMagnitude;
+				if ( score > bestScore )
+				{
+					bestScore = score;
+					bestMover = mover;
+				}
+			}
+
+			res.Add( bestMover, workTarget );
+			prunedMovers.Remove( bestMover );
+
+			if ( DEBUG_MOVE_FORMATION )
+				Debug.DrawLine( bestMover.transform.position + Vector3.up * 0.1f, target + Vector3.up * 0.1f, Color.blue, 3f );
+
+			count++;
+			if ( count >= movers.Count )
+				break;
+		}
+
+		return res;
+	}
+
+	/*
+	private Dictionary<Selectable, Vector3> ScoreAndAssignFormationMovement( List<Selectable> movers, Vector3 target, List<Vector2> offsetGrid, float distScoreMultiplier, float angleScoreMultiplier )
+	{
+		//build offsets of current movers
+		List<FormationMovementAtom> moverAtoms = new List<FormationMovementAtom>();
+		Vector3 avgPoint = Vector3.zero;
+		foreach ( Selectable mover in movers )
+		{
+			avgPoint += mover.transform.position;
+		}
+		avgPoint /= movers.Count;
+		if ( DEBUG_MOVE_FORMATION )
+			DebugExtension.DebugPoint( avgPoint, Color.blue, 3f, 3f );
+
+		Vector3 offsetVector;
+		foreach ( Selectable mover in movers )
+		{
+			FormationMovementAtom atom = new FormationMovementAtom();
+			atom.selectable = mover;
+			atom.distFromCenter = Vector3.Distance( mover.transform.position, avgPoint );
+			offsetVector = mover.transform.position - avgPoint;
+			atom.vectorFromCenter = new Vector2( offsetVector.x, offsetVector.z );
+			moverAtoms.Add( atom );
+		}
+
+		//distribute target points
+		Dictionary<Selectable, Vector3> res = new Dictionary<Selectable, Vector3>();
+		float score;
+		float bestScore;
+		FormationMovementAtom bestAtom = moverAtoms[0];
+		Vector3 finalPoint;
+		int count = 0;
+		List<FormationMovementAtom> prunedMoverAtoms = new List<FormationMovementAtom>( moverAtoms );
+		foreach ( Vector2 targetOffset in offsetGrid )
+		{
+			bestScore = Mathf.NegativeInfinity;
+			foreach ( FormationMovementAtom atom in prunedMoverAtoms )
+			{
+				score = Mathf.Abs( atom.distFromCenter - targetOffset.magnitude ) * -distScoreMultiplier;
+				score += Vector2.Dot( atom.vectorFromCenter, targetOffset ) * angleScoreMultiplier;
+				if ( score > bestScore )
+				{
+					bestScore = score;
+					bestAtom = atom;
+				}
+			}
+
+			finalPoint = target + Vector3.right * targetOffset.x + Vector3.forward * targetOffset.y;
+			res.Add( bestAtom.selectable, finalPoint );
+			prunedMoverAtoms.Remove( bestAtom );
+
+			if ( DEBUG_MOVE_FORMATION )
+				Debug.DrawLine( bestAtom.selectable.transform.position + Vector3.up * 0.1f, finalPoint + Vector3.up * 0.1f, Color.blue, 3f );
+
+			count++;
+			if ( count >= movers.Count )
+				break;
+		}
+
+		return res;
+	}
+	*/
 }

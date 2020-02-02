@@ -19,9 +19,11 @@ public class Selectable : MonoBehaviour
 		}
 	}
 
+	public bool canMove = false;
 	public virtual void OrderGround( Vector3 location ) { }
 
-	public virtual void OrderOrderableTarget( OrderableTarget target ) { }
+	public bool canUseOrderableTargets = false;
+	public virtual void OrderOrderableTarget( OrderableTarget target, WorkTarget workTarget ) { }
 
 	void OnEnable()
 	{

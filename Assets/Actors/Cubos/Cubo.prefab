@@ -271,5 +271,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isSelected: 0
   selectionRing: {fileID: 6640336676899330835}
+  canMove: 1
+  canUseOrderableTargets: 1
   unmovingVelocityThreshold: 3
   unmovingTimeCutoff: 0.5
+  workTargetDistance: 0
