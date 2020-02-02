@@ -47,6 +47,9 @@ public class Selection : MonoBehaviour
 
 	void Update()
 	{
+		if ( PlayerCommands.Get().isEnding )
+			return;
+
 		if ( PlayerCommands.Get().isAddingTurret || PlayerCommands.Get().lastAddingTurretTime == Time.time )
 		{
 			ClearSelected();

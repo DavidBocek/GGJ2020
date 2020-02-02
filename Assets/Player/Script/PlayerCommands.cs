@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Assertions;
 using DG.Tweening;
+using MEC;
+using UnityEngine.SceneManagement;
 
 public class PlayerCommands : MonoBehaviour
 {
@@ -57,9 +59,13 @@ public class PlayerCommands : MonoBehaviour
 	public Material turretGhostValidMat;
 	public Material turretGhostInvalidMat;
 
-	private void Start()
+	private void Awake()
 	{
 		UIStatic.Init();
+	}
+
+	private void Start()
+	{
 
 		m_curMoney = startingMoney;
 		m_curUIMoney = m_curMoney;
@@ -79,6 +85,8 @@ public class PlayerCommands : MonoBehaviour
 
 	private void Update()
 	{
+		if ( isEnding )
+			return;
 		UpdateOrders();
 		UpdateMoney();
 		UpdateCubos();
@@ -626,5 +634,50 @@ public class PlayerCommands : MonoBehaviour
 		TakeMoney( addTurretCost );
 	}
 
+	#endregion
+
+	#region game state
+	public WinLoseUI winLoseUI;
+	public bool isEnding = false;
+	public void Lose()
+	{
+		if ( isEnding )
+			return;
+		isEnding = true;
+
+		winLoseUI.OnLose();
+		Timing.RunCoroutineSingleton( _End(false),Segment.RealtimeUpdate, "_End", SingletonBehavior.Abort );
+	}
+
+	private IEnumerator<float> _End(bool win)
+	{
+		for (float t=0f; t<=1f; t+=(Time.unscaledDeltaTime/ winLoseUI.fadeDur ) )
+		{
+			Time.timeScale = Mathf.Lerp( 1f, 0.2f, t );
+			yield return Timing.WaitForOneFrame;
+		}
+		Time.timeScale = 0.2f;
+		yield return Timing.WaitForSeconds( 4f );
+		if ( win )
+			SceneManager.LoadScene( "MainMenu" );
+		else
+			SceneManager.LoadScene( "BananaTest" );
+	}
+
+	public void Win()
+	{
+		if ( isEnding )
+			return;
+		isEnding = true;
+
+		winLoseUI.OnWin();
+		Timing.RunCoroutineSingleton( _End(true),Segment.RealtimeUpdate, "_End", SingletonBehavior.Abort );
+	}
+
+
+	private void Reset()
+	{
+		
+	}
 	#endregion
 }

@@ -7,6 +7,7 @@ using MEC;
 public class NegaCube : OrderableTarget
 {
 	public int power = 0;
+	public int goalPower;
 	public float sacrificeTime;
 	public float sacrificeDist;
 
@@ -15,7 +16,19 @@ public class NegaCube : OrderableTarget
 	void Start()
     {
 		InitWorkTargets();
-    }
+		UIStatic.SetInt( UIStatic.MAX_SACRIFICE, goalPower );
+		UIStatic.SetInt( UIStatic.CUR_SACRIFICE, power );
+	}
+
+	private void Update()
+	{	
+		UIStatic.SetInt( UIStatic.CUR_SACRIFICE, power );
+
+		if ( Input.GetKeyDown( KeyCode.W ) )
+			PlayerCommands.Get().Win();
+		else if ( Input.GetKeyDown( KeyCode.L ) )
+			PlayerCommands.Get().Lose();
+	}
 
 	public override void ClaimWorkTarget( WorkTarget workTarget )
 	{	
@@ -45,7 +58,12 @@ public class NegaCube : OrderableTarget
 		Timing.CallDelayed( sacrificeTime + 0.1f, delegate
 		{
 			Instantiate( workFxObj, transform.position + Vector3.up * 17f, Quaternion.LookRotation( Vector3.up, Vector3.left ) );
+			power++;
+			UIStatic.SetInt( UIStatic.CUR_SACRIFICE, power );
 			Destroy( user.gameObject );
+
+			if ( power >= goalPower )
+				PlayerCommands.Get().Win();
 		} );
 	}
 }
