@@ -6,7 +6,6 @@ public class OrderableTarget : MonoBehaviour
 {
 	public Color openWorkTargetColor;
 	public Color claimedWorkTargetColor;
-	public Color 
 
 	public List<GameObject> workTargetObjs;
 	protected List<WorkTarget> m_workTargets;
