@@ -308,7 +308,7 @@ PrefabInstance:
     - target: {fileID: 7740446813714924874, guid: ead41378b42021c4ba901a824242cea5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 25
+      value: 10.01
       objectReference: {fileID: 0}
     - target: {fileID: 7740446813714924874, guid: ead41378b42021c4ba901a824242cea5,
         type: 3}
@@ -599,7 +599,7 @@ PrefabInstance:
     - target: {fileID: 7740446813714924874, guid: ead41378b42021c4ba901a824242cea5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 25
+      value: 10.01
       objectReference: {fileID: 0}
     - target: {fileID: 7740446813714924874, guid: ead41378b42021c4ba901a824242cea5,
         type: 3}
@@ -1183,11 +1183,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8919185782044759787, guid: c4cb899142e0e324fb00b5a42a480cd6,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2453977459154572461, guid: c4cb899142e0e324fb00b5a42a480cd6,
         type: 3}
       propertyPath: m_Parameters.widthMultiplier
@@ -1207,6 +1202,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Parameters.colorGradient.key0.b
       value: 0.0039215623
+      objectReference: {fileID: 0}
+    - target: {fileID: 8919185782044759787, guid: c4cb899142e0e324fb00b5a42a480cd6,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4cb899142e0e324fb00b5a42a480cd6, type: 3}
@@ -1714,7 +1714,7 @@ PrefabInstance:
     - target: {fileID: 7740446813714924874, guid: ead41378b42021c4ba901a824242cea5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 25
+      value: 10.01
       objectReference: {fileID: 0}
     - target: {fileID: 7740446813714924874, guid: ead41378b42021c4ba901a824242cea5,
         type: 3}
@@ -2600,7 +2600,7 @@ PrefabInstance:
     - target: {fileID: 7740446813714924874, guid: ead41378b42021c4ba901a824242cea5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 25
+      value: 10.01
       objectReference: {fileID: 0}
     - target: {fileID: 7740446813714924874, guid: ead41378b42021c4ba901a824242cea5,
         type: 3}
@@ -2983,6 +2983,12 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &929172269 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1290723734244535517, guid: 655c1bb38bdaa0f40a6d4691ebe828a1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1936070397}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &966048206
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3008,7 +3014,7 @@ PrefabInstance:
     - target: {fileID: 7740446813714924874, guid: ead41378b42021c4ba901a824242cea5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 25
+      value: 10.01
       objectReference: {fileID: 0}
     - target: {fileID: 7740446813714924874, guid: ead41378b42021c4ba901a824242cea5,
         type: 3}
@@ -3092,7 +3098,7 @@ PrefabInstance:
     - target: {fileID: 7740446813714924874, guid: ead41378b42021c4ba901a824242cea5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 25
+      value: 10.01
       objectReference: {fileID: 0}
     - target: {fileID: 7740446813714924874, guid: ead41378b42021c4ba901a824242cea5,
         type: 3}
@@ -3416,7 +3422,7 @@ PrefabInstance:
     - target: {fileID: 7740446813714924874, guid: ead41378b42021c4ba901a824242cea5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 25
+      value: 10.01
       objectReference: {fileID: 0}
     - target: {fileID: 7740446813714924874, guid: ead41378b42021c4ba901a824242cea5,
         type: 3}
@@ -4023,7 +4029,7 @@ PrefabInstance:
     - target: {fileID: 7740446813714924874, guid: ead41378b42021c4ba901a824242cea5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 25
+      value: 10.01
       objectReference: {fileID: 0}
     - target: {fileID: 7740446813714924874, guid: ead41378b42021c4ba901a824242cea5,
         type: 3}
@@ -6405,6 +6411,10 @@ PrefabInstance:
       propertyPath: selectionBox
       value: 
       objectReference: {fileID: 1589096566}
+    - target: {fileID: 781331917, guid: 23fc50e3a46cd6343947bcca22d124cb, type: 3}
+      propertyPath: addCuboPos
+      value: 
+      objectReference: {fileID: 929172269}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23fc50e3a46cd6343947bcca22d124cb, type: 3}
 --- !u!1001 &7150728262236766657
