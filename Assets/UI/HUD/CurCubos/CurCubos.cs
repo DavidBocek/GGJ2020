@@ -9,7 +9,6 @@ public class CurCubos : MonoBehaviour
 	public Image icon;
 	public Text label;
 	public Text text;
-	public Text maxText;
 	private Color m_iconStartColor;
 	private Color m_textStartColor;
 
@@ -21,7 +20,6 @@ public class CurCubos : MonoBehaviour
     {
 		m_iconStartColor = icon.color;
 		m_textStartColor = text.color;
-		maxText.text = "MAX";
     }
 
     // Update is called once per frame
@@ -32,9 +30,15 @@ public class CurCubos : MonoBehaviour
 			text.text = UIStatic.GetInt( UIStatic.CUR_CUBOS ).ToString();
 		}
 		if ( !PlayerCommands.Get().EnoughRoomForCubos() )
-			maxText.text = "MAX";
+		{
+			label.color = flashRedColor;
+			text.color = flashRedColor;
+		}
 		else
-			maxText.text = "";
+		{
+			label.color = m_textStartColor;
+			text.color = m_textStartColor;
+		}
 	}
 
 	public void FlashRed()
@@ -44,12 +48,12 @@ public class CurCubos : MonoBehaviour
 
 	private IEnumerator<float> _FlashRed()
 	{
-		text.color = flashRedColor;
-		label.color = flashRedColor;
+		//text.color = flashRedColor;
+		//label.color = flashRedColor;
 		icon.color = flashRedColor;
 		yield return Timing.WaitForSeconds( flashRedDuration );
-		text.color = m_textStartColor;
-		label.color = m_textStartColor;
+		//text.color = m_textStartColor;
+		//label.color = m_textStartColor;
 		icon.color = m_iconStartColor;
 	}
 }

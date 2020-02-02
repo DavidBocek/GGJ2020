@@ -7,10 +7,12 @@ public class AddCubeButtonController : MonoBehaviour
 {
 	public MoneyCounter moneyCounter;
 	public CurCubos curCubos;
+	public Text cuboCost;
 
     void Start()
     {
 		GetComponent<Button>().onClick.AddListener( OnButtonClick );
+		cuboCost.text = PlayerCommands.Get().addCuboCost.ToString();
     }
 
 	private void Update()
