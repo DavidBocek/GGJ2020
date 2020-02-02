@@ -3952,30 +3952,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1820554509709897999, guid: ead41378b42021c4ba901a824242cea5,
-        type: 3}
-      propertyPath: moveSpeed
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 1820554509709897999, guid: ead41378b42021c4ba901a824242cea5,
-        type: 3}
-      propertyPath: slerpScale
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1820554509709897999, guid: ead41378b42021c4ba901a824242cea5,
-        type: 3}
-      propertyPath: attackDamage
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1820554509709897999, guid: ead41378b42021c4ba901a824242cea5,
-        type: 3}
-      propertyPath: angularVelocity
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1953354094, guid: ead41378b42021c4ba901a824242cea5, type: 3}
-      propertyPath: m_Constraints
-      value: 4
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ead41378b42021c4ba901a824242cea5, type: 3}
 --- !u!114 &1589096566 stripped
