@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 2728689092642612090}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 271.60532, y: 64.74085, z: 171.86461}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 1, z: 2}
   m_Children:
   - {fileID: 1375216217107921577}
   m_Father: {fileID: 0}
@@ -50,8 +50,8 @@ MonoBehaviour:
   moveSpeed: 10
   stoppingDistance: 2
   slerpScale: 30
-  timeBetweenAttacks: 1
-  attackDamage: 10
+  timeBetweenAttacks: 2
+  attackDamage: 5
 --- !u!114 &8798017727898238622
 MonoBehaviour:
   m_ObjectHideFlags: 0
