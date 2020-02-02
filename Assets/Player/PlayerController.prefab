@@ -86,11 +86,12 @@ MonoBehaviour:
     type: 3}
   addTurretCost: 100
   turretGhostGridGranularity: 3
-  noTurretZones: []
   isAddingTurret: 0
+  lastAddingTurretTime: 0
   turretGhostLayerMask:
     serializedVersion: 2
     m_Bits: 544
   turretGhostValidMat: {fileID: 2100000, guid: 4aa5a5303807931419ff9f505af297e7, type: 2}
   turretGhostInvalidMat: {fileID: 2100000, guid: d6c99f3f5a1fddb4e99564879175101f,
     type: 2}
+  winLoseUI: {fileID: 0}

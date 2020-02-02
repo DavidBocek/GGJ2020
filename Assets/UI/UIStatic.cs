@@ -9,6 +9,8 @@ public static class UIStatic
 	//======================================================================
 	public static string MONEY = "money";
 	public static string CUR_CUBOS = "cur_cubos";
+	public static string CUR_SACRIFICE = "cur_nega";
+	public static string MAX_SACRIFICE = "max_nega";
 
 	//======================================================================
 	// Dictionaries

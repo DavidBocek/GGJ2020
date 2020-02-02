@@ -275,6 +275,7 @@ MonoBehaviour:
   smokeCount: 0
   smokeCountRandAdd: 0
   power: 0
+  goalPower: 15
   sacrificeTime: 0.8
   sacrificeDist: 14
 --- !u!1 &2986959944667341875
