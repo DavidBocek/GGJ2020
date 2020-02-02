@@ -7,7 +7,6 @@ public class EnemyBehaviour : MonoBehaviour
 
     [Header("Gameplay")]
     public float moveSpeed;
-    public float stoppingDistance;
     public float slerpScale = 30.0f;
     public float timeBetweenAttacks;
     public int attackDamage;
@@ -21,6 +20,8 @@ public class EnemyBehaviour : MonoBehaviour
 
     private eAIState m_currentState;
     private GameObject m_target;
+    private float m_stoppingDistance;
+    private Transform m_orbitCenterPoint;
     private List<GameObject> m_potentialTargets = new List<GameObject>();
     private float m_nextGoodAttackTime;
 
@@ -44,7 +45,7 @@ public class EnemyBehaviour : MonoBehaviour
 
         if ( m_target == null )
         {
-            m_target = GetRandomTarget();
+            GetRandomTarget();
         }
     }
     
@@ -66,7 +67,7 @@ public class EnemyBehaviour : MonoBehaviour
         switch ( m_currentState )
         {
             case eAIState.MOVE_TO_TARGET:
-                if ( Vector3.Distance( gameObject.transform.position, m_target.transform.position) < stoppingDistance )
+                if ( Vector3.Distance( gameObject.transform.position, m_orbitCenterPoint.position) < m_stoppingDistance )
                 {
                     EnterState( eAIState.ATTACK );
                 }
@@ -84,7 +85,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if ( ! m_target.GetComponent<Health>().IsAlive() )
         {
-            m_target = GetRandomTarget();
+            GetRandomTarget();
         }
 
         switch ( m_currentState )
@@ -93,7 +94,8 @@ public class EnemyBehaviour : MonoBehaviour
                 transform.position += transform.forward * ( moveSpeed * Time.deltaTime );
                 break;
             case eAIState.MOVE_TO_TARGET:
-                Vector3 vecToTarget = m_target.transform.position - transform.position;
+                Vector3 vecToTarget = m_orbitCenterPoint.position - transform.position;
+                vecToTarget.y = 0;
                 transform.rotation = Quaternion.Slerp( transform.rotation, Quaternion.LookRotation( vecToTarget, Vector3.up ), 0.5f * Time.deltaTime * slerpScale );
                 transform.position += transform.forward * ( moveSpeed * Time.deltaTime );
                 break;
@@ -131,8 +133,10 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
-    private GameObject GetRandomTarget()
+    private void GetRandomTarget()
     {
-        return m_potentialTargets[Random.Range( 0, m_potentialTargets.Count )];
+        m_target = m_potentialTargets[Random.Range( 0, m_potentialTargets.Count )];
+        m_stoppingDistance = m_target.GetComponent<BuildingController>().GetOrbitRadius();
+        m_orbitCenterPoint = m_target.GetComponent<BuildingController>().GetOrbitCenter();
     }
 }
