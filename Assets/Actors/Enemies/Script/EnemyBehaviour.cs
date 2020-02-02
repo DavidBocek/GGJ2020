@@ -7,7 +7,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     [Header("Gameplay")]
     public float moveSpeed;
-    public float stoppingDistance;
+    public float angularVelocity;
     public float slerpScale = 30.0f;
     public float timeBetweenAttacks;
     public int attackDamage;
@@ -21,8 +21,12 @@ public class EnemyBehaviour : MonoBehaviour
 
     private eAIState m_currentState;
     private GameObject m_target;
+    private float m_stoppingDistance;
+    private Transform m_orbitCenterPoint;
     private List<GameObject> m_potentialTargets = new List<GameObject>();
     private float m_nextGoodAttackTime;
+    private float m_theta;
+    private Vector3 m_vecToTarget;
 
     // Start is called before the first frame update
     void Start()
@@ -44,13 +48,24 @@ public class EnemyBehaviour : MonoBehaviour
 
         if ( m_target == null )
         {
-            m_target = GetRandomTarget();
+            GetRandomTarget();
         }
     }
     
     private void EnterState( eAIState newState )
     {
         m_currentState = newState;
+
+        switch ( newState )
+        {
+            case eAIState.ATTACK:
+                m_theta = Mathf.Asin( -1 * m_vecToTarget.z );
+                if ( -1 * m_vecToTarget.x < 0 )
+                {
+                    m_theta = ( Mathf.PI ) - m_theta;
+                }
+                break;
+        }
     }
 
     // Update is called once per frame
@@ -63,10 +78,14 @@ public class EnemyBehaviour : MonoBehaviour
 
     private void UpdateState()
     {
+        m_vecToTarget = m_orbitCenterPoint.position - transform.position;
+        m_vecToTarget.y = 0;
+        m_vecToTarget.Normalize();
+
         switch ( m_currentState )
         {
             case eAIState.MOVE_TO_TARGET:
-                if ( Vector3.Distance( gameObject.transform.position, m_target.transform.position) < stoppingDistance )
+                if ( Vector3.Distance( gameObject.transform.position, m_orbitCenterPoint.position) < m_stoppingDistance )
                 {
                     EnterState( eAIState.ATTACK );
                 }
@@ -84,7 +103,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if ( ! m_target.GetComponent<Health>().IsAlive() )
         {
-            m_target = GetRandomTarget();
+            GetRandomTarget();
         }
 
         switch ( m_currentState )
@@ -93,11 +112,13 @@ public class EnemyBehaviour : MonoBehaviour
                 transform.position += transform.forward * ( moveSpeed * Time.deltaTime );
                 break;
             case eAIState.MOVE_TO_TARGET:
-                Vector3 vecToTarget = m_target.transform.position - transform.position;
-                transform.rotation = Quaternion.Slerp( transform.rotation, Quaternion.LookRotation( vecToTarget, Vector3.up ), 0.5f * Time.deltaTime * slerpScale );
+                transform.rotation = Quaternion.Slerp( transform.rotation, Quaternion.LookRotation( m_vecToTarget, Vector3.up ), 0.5f * Time.deltaTime * slerpScale );
                 transform.position += transform.forward * ( moveSpeed * Time.deltaTime );
                 break;
             case eAIState.ATTACK:
+                transform.rotation = Quaternion.LookRotation( m_vecToTarget, Vector3.up );
+                transform.position = GetNextPositionOnCircle();
+
                 TryAttackTarget();
                 break;
         }
@@ -131,8 +152,20 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
-    private GameObject GetRandomTarget()
+    private Vector3 GetNextPositionOnCircle()
     {
-        return m_potentialTargets[Random.Range( 0, m_potentialTargets.Count )];
+        m_theta += angularVelocity * Time.deltaTime;
+
+        float x = m_orbitCenterPoint.position.x + m_stoppingDistance * Mathf.Cos( m_theta );
+        float z = m_orbitCenterPoint.position.z + m_stoppingDistance * Mathf.Sin( m_theta );
+
+        return new Vector3( x, transform.position.y, z );
+    }
+
+    private void GetRandomTarget()
+    {
+        m_target = m_potentialTargets[Random.Range( 0, m_potentialTargets.Count )];
+        m_stoppingDistance = m_target.GetComponent<BuildingController>().GetOrbitRadius();
+        m_orbitCenterPoint = m_target.GetComponent<BuildingController>().GetOrbitCenter();
     }
 }

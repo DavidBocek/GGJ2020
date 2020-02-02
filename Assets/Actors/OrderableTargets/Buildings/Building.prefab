@@ -1041,6 +1041,7 @@ MonoBehaviour:
   - {fileID: 1800645135367182109}
   - {fileID: 7020469827129920557}
   center: {fileID: 3912056889043357288}
+  orbitRadius: 30
 --- !u!114 &6578566498444511497
 MonoBehaviour:
   m_ObjectHideFlags: 0

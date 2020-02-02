@@ -5,6 +5,8 @@ using UnityEngine;
 public class BuildingController : OrderableTarget
 {
     public Transform center;
+    public float orbitRadius;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,5 +17,15 @@ public class BuildingController : OrderableTarget
     void Update()
     {
         
+    }
+
+    public float GetOrbitRadius()
+    {
+        return orbitRadius;
+    }
+
+    public Transform GetOrbitCenter()
+    {
+        return center;
     }
 }
