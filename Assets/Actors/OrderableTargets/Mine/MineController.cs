@@ -13,6 +13,7 @@ public class MineController : OrderableTarget
 
 	public override void OnWork( CuboController user )
 	{
+		base.OnWork(user);
 		PlayerCommands.Get().AddMoney( moneyPerWork );
 	}
 }

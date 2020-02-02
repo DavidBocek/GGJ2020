@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using MEC;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ public class OrderableTarget : MonoBehaviour
 
 	public List<GameObject> workTargetObjs;
 	protected List<WorkTarget> m_workTargets = new List<WorkTarget>();
+
+	public GameObject workFxObj;
 
 	protected void InitWorkTargets()
 	{
@@ -24,6 +27,9 @@ public class OrderableTarget : MonoBehaviour
 			target.obj = obj;
 			m_workTargets.Add( target );
 		}
+
+		//hack lol
+		m_startMaterial = GetComponentInChildren<Renderer>().material;
 	}
 
 	public virtual List<WorkTarget> GetOpenWorkTargets()
@@ -55,7 +61,58 @@ public class OrderableTarget : MonoBehaviour
 		workTarget.renderer.material.color = clearWorkTargetColor;
 	}
 
-	public virtual void OnWork( CuboController user ) { }
+	public virtual void OnWork( CuboController user )
+	{
+		Instantiate( workFxObj, user.transform.position + Vector3.up * 4f, Quaternion.LookRotation( Vector3.up, Vector3.left ) );
+	}
+
+	//hacky death fx stuff
+	public Renderer[] renderersToSwapOnDeath;
+	public Material deathMaterial;
+	private Material m_startMaterial;
+	public GameObject smokeFxObj;
+	private List<GameObject> m_spawnedSmokeFx = new List<GameObject>();
+	public Transform[] smokeFxSpots;
+	public int smokeCount;
+	public int smokeCountRandAdd;
+	public void OnDeath()
+	{
+		foreach (Renderer r in renderersToSwapOnDeath )
+		{
+			r.material = deathMaterial;
+		}
+
+		int smokeToSpawn = Mathf.Min( smokeCount + Random.Range( 0, smokeCountRandAdd + 1 ), smokeFxSpots.Length );
+		List<Transform> prunedSmokeSpots = new List<Transform>( smokeFxSpots );
+		for ( int i=0; i<smokeToSpawn; i++ )
+		{
+			int rand = Random.Range( 0, prunedSmokeSpots.Count );
+			Transform smokeSpot = prunedSmokeSpots[rand];
+			GameObject smoke = (GameObject)Instantiate( smokeFxObj, smokeSpot.position, Quaternion.LookRotation( Vector3.up ), smokeSpot);
+			m_spawnedSmokeFx.Add( smoke );
+			//smoke.GetComponent<ParticleSystem>().randomSeed = (uint)Random.Range( 0, int.MaxValue );
+		}
+	}
+
+	public void OnRevive()
+	{
+		foreach ( Renderer r in renderersToSwapOnDeath )
+		{
+			r.material = m_startMaterial;
+		}
+
+		List<GameObject> m_spawnedSmokeFxCopy = new List<GameObject>( m_spawnedSmokeFx );
+		foreach (GameObject fx in m_spawnedSmokeFxCopy)
+		{
+			foreach(ParticleSystem part in fx.GetComponentsInChildren<ParticleSystem>())
+			{
+				part.Stop();
+			}
+
+			m_spawnedSmokeFx.Remove( fx );
+			//system is set to destroy itself
+		}
+	}
 }
 
 public class WorkTarget

@@ -191,4 +191,9 @@ public class EnemyBehaviour : MonoBehaviour
 
         transform.position += positionAdjustment;
     }
+
+	public void OnDeath()
+	{
+		Destroy( gameObject );
+	}
 }

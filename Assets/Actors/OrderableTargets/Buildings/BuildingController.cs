@@ -35,6 +35,7 @@ public class BuildingController : OrderableTarget
 
 	public override void OnWork( CuboController user )
 	{
+		base.OnWork( user );
 		m_health.Heal( healPerWork );
 	}
 }

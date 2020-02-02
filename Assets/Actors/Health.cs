@@ -35,6 +35,8 @@ public class Health : MonoBehaviour
 		if ( !m_isAlive && m_health > maxHealth * healthFracNeededToBeAlive )
         {
             m_isAlive = true;
+			gameObject.SendMessage( "OnRevive", SendMessageOptions.DontRequireReceiver );
+
 			if ( healthbar != null )
 				healthbar.ShowRestoreBar( false );
         }

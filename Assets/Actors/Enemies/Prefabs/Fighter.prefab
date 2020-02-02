@@ -66,8 +66,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d02b2f1c001e284429446326e16a648a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 100
   healthFracNeededToBeAlive: 0.2
+  healthbar: {fileID: 0}
 --- !u!54 &1953354094
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -208,6 +209,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: 722c5f37abcf3874fa822f03a3260a36,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d40a2313493e9a94181647f2a8042ac0, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 722c5f37abcf3874fa822f03a3260a36, type: 3}
 --- !u!4 &1375216217107921577 stripped

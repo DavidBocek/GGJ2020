@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using MEC;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class TurretController : OrderableTarget
 {
@@ -23,14 +25,25 @@ public class TurretController : OrderableTarget
 
 	[Header( "Attacking" )]
 	private GameObject m_target;
+	public int attackDamage;
+	public float attackCooldown;
+	private float m_lastAttackTime;
+	public LineRenderer laserFx;
+	public float attackForwardRand;
+	public float attackRightRand;
+	public float attackLaserTime;
+	public float attackLaserEndWidth;
+	public Transform muzzlePos;
+	public GameObject muzzleFx;
 
-    void Start()
+	void Start()
     {
 		InitWorkTargets();
 		m_health = GetComponent<Health>();
 		m_state = TurretState.IDLE;
+		//Timing.CallDelayed(0.01f, delegate { m_health.TakeDamage( m_health.maxHealth ); } );
 		m_health.TakeDamage( m_health.maxHealth );
-    }
+	}
 
     void Update()
     {
@@ -79,29 +92,44 @@ public class TurretController : OrderableTarget
 				{
 					m_target = closestEnemy;
 					m_state = TurretState.ATTACKING;
+					m_lastAttackTime = Time.time - Random.Range( attackCooldown*.4f, attackCooldown*0.65f);
 				}
 
 				break;
 			case TurretState.ATTACKING:
-				float sqrDist = Vector3.ProjectOnPlane( m_target.transform.position - transform.position, Vector3.up ).sqrMagnitude;
-				if ( sqrDist > (engageDist +5)*(engageDist +5))
+				bool needNewTarget = false;
+				if ( m_target == null )
+					needNewTarget = true;
+				else
+				{
+					float sqrDist = Vector3.ProjectOnPlane( m_target.transform.position - transform.position, Vector3.up ).sqrMagnitude;
+					if ( sqrDist > ( engageDist + 5 ) * ( engageDist + 5 ) )
+						needNewTarget = true;
+				}
+				
+				if ( needNewTarget )
 				{
 					float closestDist1 = Mathf.Infinity;
 					GameObject closestEnemy1 = null;
 					foreach ( GameObject enemy in GameObject.FindGameObjectsWithTag( "Enemy" ) )
 					{
+						if ( !enemy.GetComponent<Health>().IsAlive() )
+							continue;
+
 						float sqrDist2 = Vector3.ProjectOnPlane( enemy.transform.position - transform.position, Vector3.up ).sqrMagnitude;
 						if ( sqrDist2 <= engageDist * engageDist )
 						{
 							if ( sqrDist2 < closestDist1 )
 							{
-								closestDist = sqrDist;
+								closestDist = sqrDist2;
 								closestEnemy = enemy;
 							}
 						}
 					}
 					if ( closestEnemy1 != null )
+					{
 						m_target = closestEnemy1;
+					}
 					else
 					{
 						m_target = null;
@@ -112,6 +140,7 @@ public class TurretController : OrderableTarget
 				if ( m_target == null )
 					break;
 
+				//
 				Vector3 targetDir = m_target.transform.position - top.transform.position;
 				Vector3 targetDirHoriz = targetDir;
 				targetDirHoriz.y = 0f;
@@ -120,6 +149,12 @@ public class TurretController : OrderableTarget
 				float targetAngle = Mathf.Asin( targetDir.y / targetDir.magnitude ) * Mathf.Rad2Deg;
 				targetAngle = 90f - targetAngle;
 				barrel.transform.localEulerAngles = new Vector3(Mathf.Lerp(barrel.transform.localEulerAngles.x, targetAngle, 4f * Time.deltaTime), 0f, 0f);
+
+				//
+				if ( Time.time > m_lastAttackTime + attackCooldown )
+				{
+					Timing.RunCoroutineSingleton(_AttackTarget( m_target ), gameObject, "_AttackTarget", SingletonBehavior.Overwrite);
+				}
 
 				break;
 			default:
@@ -135,13 +170,47 @@ public class TurretController : OrderableTarget
 		m_target = target;
 	}
 
-	public override void OnWork( CuboController user )
+	public IEnumerator<float> _AttackTarget( GameObject target )
 	{
-		m_health.Heal( healPerWork );
+		m_lastAttackTime = Time.time;
+		laserFx.gameObject.SetActive( true );
+		if ( target == null )
+			yield return 0f;
+		muzzleFx.gameObject.SetActive( true );
+
+		Health enemyHealth = target.GetComponent<Health>();
+		if ( enemyHealth == null )
+			yield return 0f;
+		enemyHealth.TakeDamage( attackDamage );
+
+		Vector3 targetPos = target.transform.position;
+		float startTime = Time.time;
+		Vector3 offset = target.transform.forward * Random.Range( -attackForwardRand * 0.5f, attackForwardRand )
+					+ target.transform.right * Random.Range( -attackRightRand, attackRightRand )
+					+ target.transform.up * -0.2f;
+		while (Time.time < startTime + attackLaserTime)
+		{
+			if ( m_target != null && m_target != target )
+				break;
+
+			laserFx.SetPosition( 0, muzzlePos.position );
+			if ( target != null && enemyHealth.IsAlive())
+				targetPos = target.transform.position + offset;
+					
+			laserFx.SetPosition( 1, targetPos );
+
+			//laserFx.widthMultiplier = MathUtil.RemapClamped( Time.time, startTime, startTime + attackLaserTime, 1f, attackLaserEndWidth );
+
+			yield return Timing.WaitForOneFrame;
+		}
+
+		laserFx.gameObject.SetActive( false );
+		muzzleFx.gameObject.SetActive( false );
 	}
 
-	public void OnDeath()
+	public override void OnWork( CuboController user )
 	{
-
+		base.OnWork( user );
+		m_health.Heal( healPerWork );
 	}
 }
