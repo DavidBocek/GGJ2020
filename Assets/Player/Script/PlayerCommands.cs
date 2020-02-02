@@ -31,9 +31,11 @@ public class PlayerCommands : MonoBehaviour
 	public float moveAngleScoreMultiplier;
 	private const bool DEBUG_MOVE_FORMATION = true;
 
-	[Header( "Work" )]
-	public float workMoveDistScoreMultiplier;
-	public float workMoveAngleScoreMultiplier;
+	[Header( "AddCubo" )]
+	public GameObject cuboObj;
+	public int addCuboCost;
+	public GameObject addCuboPos;
+	public float addCuboPosRand;
 
 	private void Start()
 	{
@@ -413,5 +415,30 @@ public class PlayerCommands : MonoBehaviour
 	{
 		UIStatic.SetInt( UIStatic.MONEY, m_curUIMoney );
 	}
+	#endregion
+
+	#region commands
+	public bool TryAddCubo()
+	{
+		if ( m_curMoney < addCuboCost )
+		{
+			return false;
+		}
+		else
+		{
+			TakeMoney( addCuboCost );
+			AddCubo();
+			return true;
+		}
+	}
+
+	private void AddCubo()
+	{
+		Vector2 rand = Random.insideUnitSphere * addCuboPosRand;
+		Vector3 spawnPos = addCuboPos.transform.position + Vector3.right * rand.x + Vector3.forward * rand.y;
+		spawnPos.y = 1f;
+		GameObject newCubo = (GameObject)Instantiate( cuboObj, spawnPos, Quaternion.identity );
+	}
+
 	#endregion
 }
