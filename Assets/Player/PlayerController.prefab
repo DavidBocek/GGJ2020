@@ -48,7 +48,7 @@ MonoBehaviour:
   selectionBox: {fileID: 0}
   selectionLayerMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 288
 --- !u!114 &781331917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,6 +64,7 @@ MonoBehaviour:
   orderLayerMask:
     serializedVersion: 2
     m_Bits: 1536
+  maxCubos: 30
   startingMoney: 100
   maxMoney: 10000
   uiMoneyPerSecond: 250
@@ -75,5 +76,21 @@ MonoBehaviour:
     m_Bits: 1
   moveDistScoreMultiplier: 10
   moveAngleScoreMultiplier: 200
-  workMoveDistScoreMultiplier: 0
-  workMoveAngleScoreMultiplier: 0
+  cuboObj: {fileID: 7284984851870874222, guid: 895a6ba778c3f2c43a7375c4f18aa940, type: 3}
+  addCuboCost: 50
+  addCuboPos: {fileID: 0}
+  addCuboPosRand: 11.5
+  turretGhostObj: {fileID: 4602485419976744311, guid: 02b49b98b8eaa884abff93f808d2ebe9,
+    type: 3}
+  turretObj: {fileID: 1442743952819778332, guid: c4cb899142e0e324fb00b5a42a480cd6,
+    type: 3}
+  addTurretCost: 100
+  turretGhostGridGranularity: 3
+  noTurretZones: []
+  isAddingTurret: 0
+  turretGhostLayerMask:
+    serializedVersion: 2
+    m_Bits: 544
+  turretGhostValidMat: {fileID: 2100000, guid: 4aa5a5303807931419ff9f505af297e7, type: 2}
+  turretGhostInvalidMat: {fileID: 2100000, guid: d6c99f3f5a1fddb4e99564879175101f,
+    type: 2}

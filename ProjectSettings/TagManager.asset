@@ -7,6 +7,8 @@ TagManager:
   - Cubo
   - Building
   - Enemy
+  - Turret
+  - NoTurretZone
   layers:
   - Default
   - TransparentFX
@@ -19,7 +21,7 @@ TagManager:
   - SelectionCollision
   - Ground
   - OrderableCollision
-  - 
+  - Enemy
   - 
   - 
   - 
@@ -43,4 +45,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: WorldUI
+    uniqueID: 621009823
     locked: 0

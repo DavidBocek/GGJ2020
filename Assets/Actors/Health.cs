@@ -7,27 +7,36 @@ public class Health : MonoBehaviour
     public int maxHealth = 10;
     public float healthFracNeededToBeAlive = 0.2f;
 
+	public Healthbar healthbar;
+
     private bool m_isAlive = true;
     private int m_health = 1;
-    // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
         m_health = maxHealth;
+		if ( healthbar != null )
+			healthbar.ShowRestoreBar( false );
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+		if ( healthbar != null )
+			healthbar.SetHealthFrac( m_health / (float)maxHealth );
     }
 
     public void Heal( int healAmt )
     {
-        m_health += healAmt;
+        m_health = Mathf.Min( m_health + healAmt, maxHealth );
 
-        if ( !m_isAlive && m_health > maxHealth * healthFracNeededToBeAlive )
+		if ( healthbar != null )
+			healthbar.SetHealthFrac( m_health / (float)maxHealth );
+
+		if ( !m_isAlive && m_health > maxHealth * healthFracNeededToBeAlive )
         {
             m_isAlive = true;
+			if ( healthbar != null )
+				healthbar.ShowRestoreBar( false );
         }
     }
 
@@ -35,13 +44,18 @@ public class Health : MonoBehaviour
     {
         m_health = Mathf.Max( 0, m_health - damageAmt );
 
-        if ( m_health <= 0 )
+		if ( healthbar != null )
+			healthbar.SetHealthFrac( m_health / (float)maxHealth );
+
+		if ( m_health <= 0 )
         {
             m_isAlive = false;
-            gameObject.SendMessage( "OnDeath" );
-        }
+            gameObject.SendMessage( "OnDeath", SendMessageOptions.DontRequireReceiver );
 
-    }
+			if (healthbar != null)
+				healthbar.ShowRestoreBar( true, healthFracNeededToBeAlive );
+        }
+	}
 
     public bool IsAlive()
     {

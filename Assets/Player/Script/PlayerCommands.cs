@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Assertions;
+using DG.Tweening;
 
 public class PlayerCommands : MonoBehaviour
 {
@@ -15,6 +16,10 @@ public class PlayerCommands : MonoBehaviour
 	}
 
 	public LayerMask orderLayerMask;
+
+	[Header("Cubo Count")]
+	public int maxCubos;
+	private int m_curCuboCount;
 
 	[Header( "Money" )]
 	public int startingMoney;
@@ -37,18 +42,47 @@ public class PlayerCommands : MonoBehaviour
 	public GameObject addCuboPos;
 	public float addCuboPosRand;
 
+	[Header( "AddTurret" )]
+	public GameObject turretGhostObj;
+	public GameObject turretObj;
+	public int addTurretCost;
+	public int turretGhostGridGranularity;
+	private List<BoxCollider> m_noTurretZones = new List<BoxCollider>();
+	[HideInInspector]
+	public bool isAddingTurret = false;
+	[HideInInspector]
+	public float lastAddingTurretTime = 0f;
+	private GameObject m_turretGhost;
+	public LayerMask turretGhostLayerMask;
+	public Material turretGhostValidMat;
+	public Material turretGhostInvalidMat;
+
 	private void Start()
 	{
 		UIStatic.Init();
 
 		m_curMoney = startingMoney;
 		m_curUIMoney = m_curMoney;
+
+		foreach ( Selectable selectable in Selection.selectables )
+		{
+			CuboController cubo = selectable.GetComponent<CuboController>();
+			if ( cubo != null )
+				m_curCuboCount++;
+		}
+
+		foreach ( GameObject obj in GameObject.FindGameObjectsWithTag("NoTurretZone"))
+		{
+			m_noTurretZones.Add( obj.GetComponent<BoxCollider>() );
+		}
 	}
 
 	private void Update()
 	{
 		UpdateOrders();
 		UpdateMoney();
+		UpdateCubos();
+		UpdateTurretAdding();
 	}
 
 	#region orders
@@ -64,6 +98,8 @@ public class PlayerCommands : MonoBehaviour
 		RaycastHit hitInfo;
 		if ( Physics.Raycast( mouseToWorldRay, out hitInfo, 1000f, orderLayerMask, QueryTriggerInteraction.Ignore ) )
 		{
+			//Debug.DrawLine( Camera.main.transform.position, hitInfo.point, Color.red, 3f );
+			//DebugExtension.DebugPoint( hitInfo.point, 3f, 3f );
 			string layer = LayerMask.LayerToName( hitInfo.collider.gameObject.layer );
 			switch ( layer )
 			{
@@ -107,6 +143,19 @@ public class PlayerCommands : MonoBehaviour
 						kvp.Key.OrderOrderableTarget( target, kvp.Value );
 					}
 					break;
+				/*case "Enemy":
+					GameObject enemy = hitInfo.collider.gameObject.GetComponentInParent<EnemyBehaviour>().gameObject;
+					if ( enemy == null )
+						break;
+
+					List<Selectable> targetingUnits = new List<Selectable>();
+					foreach( Selectable selectable in Selection.GetSelected() )
+					{
+						if ( selectable.canTargetEnemies )
+							selectable.OrderTargetEnemy( enemy );
+					}
+
+					break;*/
 				default:
 					Debug.LogWarning( "Unknown order raycast hit. Layer: " + layer );
 					break;
@@ -374,6 +423,7 @@ public class PlayerCommands : MonoBehaviour
 	#region money
 	public void UpdateMoney()
 	{
+		//TODO REMOVE ME
 		if ( Input.GetKeyDown( KeyCode.O ) )
 			AddMoney( 50 );
 		else if ( Input.GetKeyDown( KeyCode.I ) )
@@ -418,6 +468,16 @@ public class PlayerCommands : MonoBehaviour
 	#endregion
 
 	#region commands
+	private void UpdateCubos()
+	{
+		UpdateCubosUI();
+	}
+
+	public bool EnoughRoomForCubos()
+	{
+		return m_curCuboCount < maxCubos;
+	}
+
 	public bool TryAddCubo()
 	{
 		if ( m_curMoney < addCuboCost )
@@ -438,6 +498,118 @@ public class PlayerCommands : MonoBehaviour
 		Vector3 spawnPos = addCuboPos.transform.position + Vector3.right * rand.x + Vector3.forward * rand.y;
 		spawnPos.y = 1f;
 		GameObject newCubo = (GameObject)Instantiate( cuboObj, spawnPos, Quaternion.identity );
+		m_curCuboCount++;
+		UpdateCubosUI();
+	}
+
+	private void UpdateCubosUI()
+	{
+		UIStatic.SetInt( UIStatic.CUR_CUBOS, m_curCuboCount );
+	}
+
+	private void UpdateTurretAdding()
+	{
+		if ( !isAddingTurret )
+			return;
+
+		if ( Input.GetButtonDown("ClearSelection"))
+		{
+			StopAddingTurret();
+			return;
+		}
+
+		lastAddingTurretTime = Time.time;
+
+		Ray mouseToWorldRay = Camera.main.ScreenPointToRay( Input.mousePosition );
+		RaycastHit hitInfo;
+		bool hitSomething = false;
+		if ( Physics.Raycast( mouseToWorldRay, out hitInfo, 1000f, turretGhostLayerMask, QueryTriggerInteraction.Ignore ) )
+		{
+			hitSomething = true;
+		}
+
+		Vector3 roundedPosition = hitInfo.point;
+		roundedPosition.y = 1f;
+		roundedPosition.x = Mathf.Round( roundedPosition.x / turretGhostGridGranularity ) * turretGhostGridGranularity;
+		roundedPosition.z = Mathf.Round( roundedPosition.z / turretGhostGridGranularity ) * turretGhostGridGranularity;
+		m_turretGhost.transform.position = roundedPosition;
+
+		bool canPlace = true;
+		foreach ( BoxCollider box in m_noTurretZones)
+		{
+			if ( box.bounds.Contains(roundedPosition))
+			{
+				canPlace = false;
+				foreach ( Renderer r in m_turretGhost.GetComponentsInChildren<Renderer>())
+				{
+					r.material = turretGhostInvalidMat;
+				}
+				break;
+			}
+		}
+		if ( canPlace )
+		{
+			foreach ( Renderer r in m_turretGhost.GetComponentsInChildren<Renderer>() )
+			{
+				r.material = turretGhostValidMat;
+			}
+		}
+
+		if ( Input.GetButtonDown("Select") && hitSomething )
+		{
+			if ( hitInfo.collider.gameObject.layer == LayerMask.NameToLayer( "UI" ) )
+			{
+				StopAddingTurret();
+				return;
+			}
+
+			if ( Camera.main.WorldToViewportPoint( roundedPosition).y < .1026f)
+			{
+				//ui bar hack
+				StopAddingTurret();
+				return;
+			}
+
+			if ( canPlace )
+			{
+				PlaceTurret(roundedPosition);
+			}
+		}
+	}
+
+	public bool TryAddTurret()
+	{
+		if ( m_curMoney < addTurretCost )
+		{
+			return false;
+		}
+		else
+		{
+			BeginAddTurret();
+			return true;
+		}
+	}
+
+	private void BeginAddTurret()
+	{
+		isAddingTurret = true;
+		GameObject turretGhost = (GameObject)Instantiate( turretGhostObj, Vector3.zero, Quaternion.identity );
+		m_turretGhost = turretGhost;
+	}
+
+	private void StopAddingTurret()
+	{
+		Destroy( m_turretGhost );
+		isAddingTurret = false;
+		m_turretGhost = null;
+	}
+
+	private void PlaceTurret( Vector3 pos )
+	{
+		if ( m_curMoney >= addTurretCost )
+			Instantiate( turretObj, pos, Quaternion.identity );
+		StopAddingTurret();
+		TakeMoney( addTurretCost );
 	}
 
 	#endregion

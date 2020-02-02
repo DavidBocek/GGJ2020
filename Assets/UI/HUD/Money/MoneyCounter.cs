@@ -9,21 +9,22 @@ public class MoneyCounter : MonoBehaviour
 	public Color flashRedColor;
 	public float flashRedDuration;
 
-	private Text m_text;
+	public Text moneyText;
+	private Text m_labelText;
 	private Color m_startColor;
 
 	// Start is called before the first frame update
 	void Start()
 	{
-		m_text = GetComponent<Text>();
-		m_startColor = m_text.color;
+		m_labelText = GetComponent<Text>();
+		m_startColor = moneyText.color;
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
 		if ( UIStatic.HasInt( UIStatic.MONEY ) )
-			m_text.text = UIStatic.GetInt( UIStatic.MONEY ).ToString();
+			moneyText.text = UIStatic.GetInt( UIStatic.MONEY ).ToString();
 	}
 
 	public void FlashRed()
@@ -33,9 +34,11 @@ public class MoneyCounter : MonoBehaviour
 
 	private IEnumerator<float> _FlashRed()
 	{
-		m_text.color = flashRedColor;
+		moneyText.color = flashRedColor;
+		m_labelText.color = flashRedColor;
 		yield return Timing.WaitForSeconds( flashRedDuration );
-		m_text.color = m_startColor;
+		moneyText.color = m_startColor;
+		m_labelText.color = m_startColor;
 
 	}
 }

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BuildingController : OrderableTarget
 {
+	private Health m_health;
+	public int healPerWork;
+
     public Transform center;
     public float orbitRadius;
 
@@ -11,6 +14,7 @@ public class BuildingController : OrderableTarget
     void Start()
     {
 		InitWorkTargets();
+		m_health = GetComponent<Health>();
     }
 
     // Update is called once per frame
@@ -28,4 +32,9 @@ public class BuildingController : OrderableTarget
     {
         return center;
     }
+
+	public override void OnWork( CuboController user )
+	{
+		m_health.Heal( healPerWork );
+	}
 }

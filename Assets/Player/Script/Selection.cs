@@ -47,15 +47,33 @@ public class Selection : MonoBehaviour
 
 	void Update()
 	{
+		if ( PlayerCommands.Get().isAddingTurret || PlayerCommands.Get().lastAddingTurretTime == Time.time )
+		{
+			ClearSelected();
+			isSelecting = false;
+			return;
+		}
+
 		if ( Input.GetButtonDown( "ClearSelection" ) )
 			ClearSelected();
 
-		if ( Input.GetMouseButtonDown( 0 ) )
+		if ( Input.GetButtonDown( "Select" ) )
 		{
+			if ( Camera.main.ScreenToViewportPoint( Input.mousePosition ).y < .1026f )
+			{
+				//ui bar hack
+				return;
+			}
+
 			Ray mouseToWorldRay = Camera.main.ScreenPointToRay( Input.mousePosition );
 			RaycastHit hitInfo;
 			if ( Physics.Raycast( mouseToWorldRay, out hitInfo, 1000f, selectionLayerMask, QueryTriggerInteraction.Ignore ) )
 			{
+				if ( hitInfo.collider.gameObject.layer == LayerMask.NameToLayer( "UI" ) )
+				{
+					return;
+				}
+
 				Selectable s = hitInfo.collider.GetComponentInParent<Selectable>();
 				if ( s != null )
 				{

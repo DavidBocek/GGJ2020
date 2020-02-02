@@ -25,6 +25,9 @@ public class Selectable : MonoBehaviour
 	public bool canUseOrderableTargets = false;
 	public virtual void OrderOrderableTarget( OrderableTarget target, WorkTarget workTarget ) { }
 
+	public bool canTargetEnemies = false;
+	public virtual void OrderTargetEnemy( GameObject enemy ) { }
+
 	void OnEnable()
 	{
 		Selection.selectables.Add( this );

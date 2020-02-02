@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using DG.Tweening;
+using MEC;
 
 public class CuboController : Selectable
 {
@@ -44,7 +45,20 @@ public class CuboController : Selectable
 		m_state = CuboState.IDLE;
 
 		m_navAgent = GetComponent<NavMeshAgent>();
+
+		SpawnAnim();
     }
+
+	public void SpawnAnim()
+	{
+		model.transform.localScale = Vector3.zero;
+		Sequence seq = DOTween.Sequence();
+		seq.Append( model.transform.DOScale( 1.15f, 0.5f ).SetEase( Ease.OutCubic ) );
+		seq.Append( model.transform.DOScale( 0.925f, 0.3f ).SetEase( Ease.InCubic ) );
+		seq.Append( model.transform.DOScale( 1f, 0.2f ).SetEase( Ease.InCubic ) );
+		seq.Play();
+		Timing.CallDelayed( 1.25f, delegate { model.transform.localScale = Vector3.one; } );
+	}
 
     void Update()
     {
@@ -177,6 +191,12 @@ public class CuboController : Selectable
 	private void OnDoWork()
 	{
 		model.transform.DOPunchScale( new Vector3( 1.025f, 0.8f, 1.025f ), 0.25f, 0, 2f );
-		model.transform.DOJump( transform.position, 2f, 1, 0.5f ).SetDelay(0.2f);
+
+		Sequence seq = DOTween.Sequence();
+		seq.Append( model.transform.DOLocalMoveY( 2f, 0.2f ).SetEase( Ease.InQuad ) );
+		seq.Append( model.transform.DOLocalMoveY( 0.5f, 0.15f ).SetEase( Ease.OutCubic ) );
+		seq.Append( model.transform.DOScale( new Vector3( 1.15f, 0.6f, 1.15f ), 0.1f ).SetLoops( 2, LoopType.Yoyo ) );
+		seq.Play();
+		//model.transform.DOJump( transform.position+Vector3.up, 2f, 1, 0.5f ).SetDelay(0.2f);
 	}
 }

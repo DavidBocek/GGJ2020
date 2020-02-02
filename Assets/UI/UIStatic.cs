@@ -8,6 +8,7 @@ public static class UIStatic
 	// Constants
 	//======================================================================
 	public static string MONEY = "money";
+	public static string CUR_CUBOS = "cur_cubos";
 
 	//======================================================================
 	// Dictionaries
