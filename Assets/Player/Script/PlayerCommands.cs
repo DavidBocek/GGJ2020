@@ -8,6 +8,11 @@ public class PlayerCommands : MonoBehaviour
 {
 	public LayerMask orderLayerMask;
 
+	[Header( "Money" )]
+	public int startingMoney;
+	[HideInInspector]
+	public int curMoney;
+
 	[Header("Move")]
 	public GameObject moveOrderUIPrefab;
 	public float moveOrderFormationOffsetDist;

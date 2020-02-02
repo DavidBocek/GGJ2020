@@ -277,4 +277,4 @@ MonoBehaviour:
   unmovingTimeCutoff: 0.5
   workTargetDistance: 0.45
   workRotSnapLerp: 15
-  workCooldown: 0
+  workCooldown: 3
