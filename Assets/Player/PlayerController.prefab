@@ -64,11 +64,16 @@ MonoBehaviour:
   orderLayerMask:
     serializedVersion: 2
     m_Bits: 1536
+  startingMoney: 100
+  maxMoney: 10000
+  uiMoneyPerSecond: 250
   moveOrderUIPrefab: {fileID: 4485796440636321007, guid: a37a26b9f1efad24a967f8492058d9fa,
     type: 3}
   moveOrderFormationOffsetDist: 4
   moveOrderFormationBlockerMask:
     serializedVersion: 2
     m_Bits: 1
-  formationScoreDistWeight: 2
-  formationScoreAngleWeight: 10
+  moveDistScoreMultiplier: 10
+  moveAngleScoreMultiplier: 200
+  workMoveDistScoreMultiplier: 0
+  workMoveAngleScoreMultiplier: 0

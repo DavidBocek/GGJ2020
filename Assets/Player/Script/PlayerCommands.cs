@@ -19,8 +19,9 @@ public class PlayerCommands : MonoBehaviour
 	[Header( "Money" )]
 	public int startingMoney;
 	public int maxMoney;
-	[HideInInspector]
 	private int m_curMoney;
+	public float uiMoneyPerSecond;
+	private int m_curUIMoney;
 
 	[Header("Move")]
 	public GameObject moveOrderUIPrefab;
@@ -36,7 +37,10 @@ public class PlayerCommands : MonoBehaviour
 
 	private void Start()
 	{
+		UIStatic.Init();
+
 		m_curMoney = startingMoney;
+		m_curUIMoney = m_curMoney;
 	}
 
 	private void Update()
@@ -368,6 +372,28 @@ public class PlayerCommands : MonoBehaviour
 	#region money
 	public void UpdateMoney()
 	{
+		if ( Input.GetKeyDown( KeyCode.O ) )
+			AddMoney( 50 );
+		else if ( Input.GetKeyDown( KeyCode.I ) )
+			TakeMoney( 50 );
+
+
+		if (m_curUIMoney != m_curMoney)
+		{
+			float moneyRate = uiMoneyPerSecond;
+
+			if ( Mathf.Abs( m_curUIMoney - m_curMoney ) > 250 )
+				moneyRate *= 3f;
+				
+			if (m_curMoney > m_curUIMoney)
+			{
+				m_curUIMoney = Mathf.Min( (int)(m_curUIMoney + moneyRate * Time.deltaTime), m_curMoney );
+			}
+			else
+			{
+				m_curUIMoney = Mathf.Max( (int)(m_curUIMoney - moneyRate * Time.deltaTime), m_curMoney );
+			}
+		}
 		UpdateMoneyUI();
 	}
 
@@ -385,7 +411,7 @@ public class PlayerCommands : MonoBehaviour
 
 	public void UpdateMoneyUI()
 	{
-		UIStatic.SetInt( UIStatic.MONEY, m_curMoney );
+		UIStatic.SetInt( UIStatic.MONEY, m_curUIMoney );
 	}
 	#endregion
 }
