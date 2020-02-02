@@ -6,12 +6,21 @@ using UnityEngine.Assertions;
 
 public class PlayerCommands : MonoBehaviour
 {
+	private static PlayerCommands m_instance;
+	public static PlayerCommands Get()
+	{
+		if ( m_instance == null )
+			m_instance = GameObject.FindWithTag( "Player" ).GetComponent<PlayerCommands>();
+		return m_instance;
+	}
+
 	public LayerMask orderLayerMask;
 
 	[Header( "Money" )]
 	public int startingMoney;
+	public int maxMoney;
 	[HideInInspector]
-	public int curMoney;
+	private int m_curMoney;
 
 	[Header("Move")]
 	public GameObject moveOrderUIPrefab;
@@ -27,14 +36,16 @@ public class PlayerCommands : MonoBehaviour
 
 	private void Start()
 	{
-		
+		m_curMoney = startingMoney;
 	}
 
 	private void Update()
 	{
 		UpdateOrders();
+		UpdateMoney();
 	}
 
+	#region orders
 	private void UpdateOrders()
 	{
 		if ( !Input.GetButtonDown( "Order" ) )
@@ -96,7 +107,9 @@ public class PlayerCommands : MonoBehaviour
 			}
 		}
 	}
+	#endregion
 
+	#region movement logic
 	private struct FormationMovementAtom
 	{
 		public Selectable selectable;
@@ -350,4 +363,29 @@ public class PlayerCommands : MonoBehaviour
 		return res;
 	}
 	*/
+	#endregion
+
+	#region money
+	public void UpdateMoney()
+	{
+		UpdateMoneyUI();
+	}
+
+	public void AddMoney( int money )
+	{
+		m_curMoney = Mathf.Min( m_curMoney + money, maxMoney );
+		UpdateMoneyUI();
+	}
+
+	public void TakeMoney( int money )
+	{
+		m_curMoney = Mathf.Max( m_curMoney - money, 0 );
+		UpdateMoneyUI();
+	}
+
+	public void UpdateMoneyUI()
+	{
+		UIStatic.SetInt( UIStatic.MONEY, m_curMoney );
+	}
+	#endregion
 }

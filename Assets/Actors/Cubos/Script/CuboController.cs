@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using DG.Tweening;
 
 public class CuboController : Selectable
 {
@@ -15,6 +16,10 @@ public class CuboController : Selectable
 	private CuboState m_state;
 
 	private NavMeshAgent m_navAgent;
+
+	//visuals
+	[Header( "Visuals" )]
+	public GameObject model;
 
 	//moving
 	[Header( "Movement" )]
@@ -82,7 +87,7 @@ public class CuboController : Selectable
 				{
 					m_orderableTarget.OnWork( this );
 					m_lastWorkTime = Time.time;
-					Debug.Log( "(" + gameObject.name + ") DID WORK!" );
+					OnDoWork();
 				}
 				break;
 			default:
@@ -167,5 +172,11 @@ public class CuboController : Selectable
 		m_workTarget = workTarget;
 		m_moveTarget = workTarget.pos;
 		SwitchState( CuboState.MOVING_TO_WORK );
+	}
+
+	private void OnDoWork()
+	{
+		model.transform.DOPunchScale( new Vector3( 1.025f, 0.8f, 1.025f ), 0.25f, 0, 2f );
+		model.transform.DOJump( transform.position, 2f, 1, 0.5f ).SetDelay(0.2f);
 	}
 }
