@@ -39,6 +39,8 @@ public class TurretController : OrderableTarget
     public AudioClip turretLaserNoise;
     public AudioClip turretOnline;
     public AudioClip turretExplode;
+    public AudioClip turretRepair;
+    public AudioClip turretSpawn;
 
 	void Start()
     {
@@ -220,6 +222,7 @@ public class TurretController : OrderableTarget
 
 		base.OnWork( user );
 		m_health.Heal( healPerWork );
+        PlaySound( turretRepair );
 	}
 
     public override void OnRevive()
