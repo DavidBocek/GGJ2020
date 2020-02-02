@@ -24,16 +24,25 @@ public class EnemyBrain : MonoBehaviour
 
     void Update()
     {
-        foreach( EnemySpawnerSpawn spawner in spawnerSpawns )
+		List<EnemySpawnerSpawn> copy = new List<EnemySpawnerSpawn>( spawnerSpawns );
+        foreach( EnemySpawnerSpawn spawner in copy )
 		{
 			if ( spawner.completed )
 				continue;
+
+			if ( spawner.spawnerObj == null )
+			{
+				spawnerSpawns.Remove( spawner );
+				continue;
+			}
 
 			if (Time.time > spawner.time)
 			{
 				Transform loc = spawnLocs[Random.Range( 0, spawnLocs.Count )];
 				Instantiate( spawner.spawnerObj, loc.position, Quaternion.identity );
 				spawnLocs.Remove( loc );
+				spawner.completed = true;
+				spawnerSpawns.Remove( spawner );
 			}
 		}
     }
