@@ -63,4 +63,9 @@ public class Health : MonoBehaviour
     {
         return m_isAlive;
     }
+
+	public bool IsFull()
+	{
+		return m_health >= maxHealth;
+	}
 }

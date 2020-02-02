@@ -210,6 +210,9 @@ public class TurretController : OrderableTarget
 
 	public override void OnWork( CuboController user )
 	{
+		if ( m_health.IsFull() )
+			return;
+
 		base.OnWork( user );
 		m_health.Heal( healPerWork );
 	}
