@@ -19,8 +19,9 @@ public class PlayerCommands : MonoBehaviour
 	[Header( "Money" )]
 	public int startingMoney;
 	public int maxMoney;
-	[HideInInspector]
 	private int m_curMoney;
+	public float uiMoneyPerSecond;
+	private int m_curUIMoney;
 
 	[Header("Move")]
 	public GameObject moveOrderUIPrefab;
@@ -30,13 +31,18 @@ public class PlayerCommands : MonoBehaviour
 	public float moveAngleScoreMultiplier;
 	private const bool DEBUG_MOVE_FORMATION = true;
 
-	[Header( "Work" )]
-	public float workMoveDistScoreMultiplier;
-	public float workMoveAngleScoreMultiplier;
+	[Header( "AddCubo" )]
+	public GameObject cuboObj;
+	public int addCuboCost;
+	public GameObject addCuboPos;
+	public float addCuboPosRand;
 
 	private void Start()
 	{
+		UIStatic.Init();
+
 		m_curMoney = startingMoney;
+		m_curUIMoney = m_curMoney;
 	}
 
 	private void Update()
@@ -368,6 +374,28 @@ public class PlayerCommands : MonoBehaviour
 	#region money
 	public void UpdateMoney()
 	{
+		if ( Input.GetKeyDown( KeyCode.O ) )
+			AddMoney( 50 );
+		else if ( Input.GetKeyDown( KeyCode.I ) )
+			TakeMoney( 50 );
+
+
+		if (m_curUIMoney != m_curMoney)
+		{
+			float moneyRate = uiMoneyPerSecond;
+
+			if ( Mathf.Abs( m_curUIMoney - m_curMoney ) > 250 )
+				moneyRate *= 3f;
+				
+			if (m_curMoney > m_curUIMoney)
+			{
+				m_curUIMoney = Mathf.Min( (int)(m_curUIMoney + moneyRate * Time.deltaTime), m_curMoney );
+			}
+			else
+			{
+				m_curUIMoney = Mathf.Max( (int)(m_curUIMoney - moneyRate * Time.deltaTime), m_curMoney );
+			}
+		}
 		UpdateMoneyUI();
 	}
 
@@ -385,7 +413,32 @@ public class PlayerCommands : MonoBehaviour
 
 	public void UpdateMoneyUI()
 	{
-		UIStatic.SetInt( UIStatic.MONEY, m_curMoney );
+		UIStatic.SetInt( UIStatic.MONEY, m_curUIMoney );
 	}
+	#endregion
+
+	#region commands
+	public bool TryAddCubo()
+	{
+		if ( m_curMoney < addCuboCost )
+		{
+			return false;
+		}
+		else
+		{
+			TakeMoney( addCuboCost );
+			AddCubo();
+			return true;
+		}
+	}
+
+	private void AddCubo()
+	{
+		Vector2 rand = Random.insideUnitSphere * addCuboPosRand;
+		Vector3 spawnPos = addCuboPos.transform.position + Vector3.right * rand.x + Vector3.forward * rand.y;
+		spawnPos.y = 1f;
+		GameObject newCubo = (GameObject)Instantiate( cuboObj, spawnPos, Quaternion.identity );
+	}
+
 	#endregion
 }
