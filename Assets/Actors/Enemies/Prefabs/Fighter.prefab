@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1953354093}
   m_Layer: 0
   m_Name: Fighter
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51,7 +51,8 @@ MonoBehaviour:
   angularVelocity: 1
   slerpScale: 10
   timeBetweenAttacks: 2
-  attackDamage: 5
+  attackDamage: 2
+  tooCloseThreshold: 10
 --- !u!114 &8798017727898238622
 MonoBehaviour:
   m_ObjectHideFlags: 0

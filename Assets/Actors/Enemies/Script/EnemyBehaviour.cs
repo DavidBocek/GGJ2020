@@ -11,6 +11,7 @@ public class EnemyBehaviour : MonoBehaviour
     public float slerpScale = 30.0f;
     public float timeBetweenAttacks;
     public int attackDamage;
+    public float tooCloseThreshold;
 
     private enum eAIState
     {
@@ -110,10 +111,12 @@ public class EnemyBehaviour : MonoBehaviour
         {
             case eAIState.MOVE_TO_LINE:
                 transform.position += transform.forward * ( moveSpeed * Time.deltaTime );
+                CompensateForNearbyUnits();
                 break;
             case eAIState.MOVE_TO_TARGET:
                 transform.rotation = Quaternion.Slerp( transform.rotation, Quaternion.LookRotation( m_vecToTarget, Vector3.up ), 0.5f * Time.deltaTime * slerpScale );
                 transform.position += transform.forward * ( moveSpeed * Time.deltaTime );
+                CompensateForNearbyUnits();
                 break;
             case eAIState.ATTACK:
                 transform.rotation = Quaternion.LookRotation( m_vecToTarget, Vector3.up );
@@ -167,5 +170,25 @@ public class EnemyBehaviour : MonoBehaviour
         m_target = m_potentialTargets[Random.Range( 0, m_potentialTargets.Count )];
         m_stoppingDistance = m_target.GetComponent<BuildingController>().GetOrbitRadius();
         m_orbitCenterPoint = m_target.GetComponent<BuildingController>().GetOrbitCenter();
+    }
+
+    private void CompensateForNearbyUnits()
+    {
+        GameObject[] allUnits = GameObject.FindGameObjectsWithTag( "Enemy" );
+        Vector3 positionAdjustment =  Vector3.zero;
+
+        foreach ( GameObject unit in allUnits )
+        {
+            if ( Vector3.Distance( transform.position, unit.transform.position ) < tooCloseThreshold )
+            {
+                Vector3 vecAwayFromUnit = transform.position - unit.transform.position;
+                float dist = vecAwayFromUnit.magnitude;
+                vecAwayFromUnit.Normalize();
+
+                positionAdjustment += moveSpeed * ( 1 - dist / tooCloseThreshold ) * Time.deltaTime * vecAwayFromUnit;
+            }
+        }
+
+        transform.position += positionAdjustment;
     }
 }
