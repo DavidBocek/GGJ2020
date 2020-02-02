@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5572871995386595484}
   - component: {fileID: 5572871995386595487}
+  - component: {fileID: 781331917}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Player
@@ -45,4 +46,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 0}
   selectionBox: {fileID: 0}
-  copyKey: 304
+  selectionLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+--- !u!114 &781331917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5572871995386595486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9b3c615bfadf0d45a9beef8e48895e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  orderLayerMask:
+    serializedVersion: 2
+    m_Bits: 1536
+  moveOrderUIPrefab: {fileID: 4485796440636321007, guid: a37a26b9f1efad24a967f8492058d9fa,
+    type: 3}
+  moveOrderFormationOffsetDist: 4
+  moveOrderFormationBlockerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  formationScoreDistWeight: 2
+  formationScoreAngleWeight: 10
