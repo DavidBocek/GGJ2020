@@ -66,16 +66,17 @@ public class PlayerCommands : MonoBehaviour
 
 					break;
 				case "OrderableCollision":
+					OrderableTarget target = hitInfo.collider.gameObject.GetComponentInChildren<OrderableTarget>();
+
 					List<Selectable> workingUnits = new List<Selectable>();
 					foreach ( Selectable selectable in Selection.GetSelected() )
 					{
-						if ( selectable.canMove )
+						CuboController cubo = selectable.GetComponent<CuboController>();
+						if ( selectable.canMove && (cubo == null || cubo.GetOrderableTarget() != target) )
 							workingUnits.Add( selectable );
 					}
 					if ( workingUnits.Count == 0 )
 						break;
-
-					OrderableTarget target = hitInfo.collider.gameObject.GetComponentInChildren<OrderableTarget>();
 
 					List<WorkTarget> workTargets = target.GetOpenWorkTargets();
 

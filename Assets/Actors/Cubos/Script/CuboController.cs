@@ -25,9 +25,13 @@ public class CuboController : Selectable
 	private bool m_isUnmoving;
 
 	//working
+	[Header("Working")]
 	public float workTargetDistance;
+	public float workRotSnapLerp;
+	public float workCooldown;
 	private OrderableTarget m_orderableTarget;
 	private WorkTarget m_workTarget;
+	public OrderableTarget GetOrderableTarget() { return m_orderableTarget; }
 
     void Start()
     {
@@ -66,11 +70,13 @@ public class CuboController : Selectable
 				break;
 			case CuboState.MOVING_TO_WORK:
 				if ( Vector3.Distance( m_moveTarget, transform.position ) < workTargetDistance )
-				{	
+				{
+					m_orderableTarget.OccupyWorkTarget( m_workTarget );
 					SwitchState( CuboState.WORKING );
 				}
 				break;
 			case CuboState.WORKING:
+				transform.rotation = Quaternion.Slerp( transform.rotation, m_workTarget.obj.transform.rotation, workRotSnapLerp * Time.deltaTime );
 				break;
 			default:
 				throw new UnityException( "Unrecognized cubo state: " + m_state );
@@ -94,15 +100,16 @@ public class CuboController : Selectable
 				m_navAgent.isStopped = false;
 				break;
 			case CuboState.WORKING:
-				m_navAgent.SetDestination( transform.position );
-				m_navAgent.isStopped = false;
+				m_navAgent.Move( m_workTarget.pos - transform.position );
+				m_navAgent.SetDestination( m_workTarget.pos );
+				m_navAgent.isStopped = false;		
 				break;
 			default:
 				throw new UnityException( "Unrecognized cubo state: " + m_state );
 		}
 	}
 
-	void OnExitState( CuboState oldState )
+	void OnExitState( CuboState oldState, CuboState nextState )
 	{
 		switch ( m_state )
 		{
@@ -112,11 +119,20 @@ public class CuboController : Selectable
 				m_isUnmoving = false;
 				break;
 			case CuboState.MOVING_TO_WORK:
+				if ( nextState != CuboState.WORKING )
+				{
+					m_orderableTarget.LeaveWorkTarget( m_workTarget );
+					m_orderableTarget = null;
+					m_workTarget = null;
+				}
 				break;
 			case CuboState.WORKING:
-				m_orderableTarget.LeaveWorkTarget( m_workTarget );
-				m_orderableTarget = null;
-				m_workTarget = null;
+				if ( nextState != CuboState.MOVING_TO_WORK && nextState != CuboState.WORKING )
+				{
+					m_orderableTarget.LeaveWorkTarget( m_workTarget );
+					m_orderableTarget = null;
+					m_workTarget = null;
+				}
 				break;
 			default:
 				throw new UnityException( "Unrecognized cubo state: " + m_state );
@@ -125,7 +141,7 @@ public class CuboController : Selectable
 
 	void SwitchState( CuboState newState )
 	{
-		OnExitState( m_state );
+		OnExitState( m_state, newState );
 		m_state = newState;
 		OnEnterState( newState );
 	}
@@ -139,8 +155,10 @@ public class CuboController : Selectable
 
 	public override void OrderOrderableTarget( OrderableTarget target, WorkTarget workTarget )
 	{
+		if ( m_orderableTarget != null )
+			m_orderableTarget.LeaveWorkTarget( m_workTarget );
 		m_orderableTarget = target;
-		m_orderableTarget.FillWorkTarget( workTarget );
+		m_orderableTarget.ClaimWorkTarget( workTarget );
 		m_workTarget = workTarget;
 		m_moveTarget = workTarget.pos;
 		SwitchState( CuboState.MOVING_TO_WORK );
