@@ -100,6 +100,7 @@ public class CuboController : Selectable
 				m_navAgent.isStopped = false;
 				break;
 			case CuboState.WORKING:
+				m_orderableTarget.OccupyWorkTarget( m_workTarget );
 				m_navAgent.Move( m_workTarget.pos - transform.position );
 				m_navAgent.SetDestination( m_workTarget.pos );
 				m_navAgent.isStopped = false;		
@@ -119,20 +120,8 @@ public class CuboController : Selectable
 				m_isUnmoving = false;
 				break;
 			case CuboState.MOVING_TO_WORK:
-				if ( nextState != CuboState.WORKING )
-				{
-					m_orderableTarget.LeaveWorkTarget( m_workTarget );
-					m_orderableTarget = null;
-					m_workTarget = null;
-				}
 				break;
 			case CuboState.WORKING:
-				if ( nextState != CuboState.MOVING_TO_WORK && nextState != CuboState.WORKING )
-				{
-					m_orderableTarget.LeaveWorkTarget( m_workTarget );
-					m_orderableTarget = null;
-					m_workTarget = null;
-				}
 				break;
 			default:
 				throw new UnityException( "Unrecognized cubo state: " + m_state );
@@ -148,6 +137,13 @@ public class CuboController : Selectable
 
 	public override void OrderGround( Vector3 location )
 	{
+		if ( m_orderableTarget != null )
+		{
+			m_orderableTarget.LeaveWorkTarget( m_workTarget );
+			m_workTarget = null;
+			m_orderableTarget = null;
+		}
+
 		location.y = 1f;
 		m_moveTarget = location;
 		SwitchState( CuboState.MOVING_TO_EMPTY );
@@ -157,6 +153,7 @@ public class CuboController : Selectable
 	{
 		if ( m_orderableTarget != null )
 			m_orderableTarget.LeaveWorkTarget( m_workTarget );
+
 		m_orderableTarget = target;
 		m_orderableTarget.ClaimWorkTarget( workTarget );
 		m_workTarget = workTarget;
