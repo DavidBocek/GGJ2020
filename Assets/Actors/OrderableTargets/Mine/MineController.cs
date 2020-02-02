@@ -5,6 +5,7 @@ using UnityEngine;
 public class MineController : OrderableTarget
 {
 	public int moneyPerWork;
+    public AudioClip moneyNoise;
 
     void Start()
     {
@@ -15,5 +16,6 @@ public class MineController : OrderableTarget
 	{
 		base.OnWork(user);
 		PlayerCommands.Get().AddMoney( moneyPerWork );
-	}
+        Camera.main.GetComponent<AudioSource>().PlayOneShot( moneyNoise );
+    }
 }

@@ -65,6 +65,9 @@ MonoBehaviour:
   attackRightRand: 4
   attackLaserTime: 0.25
   attackLaserEndWidth: 1
+  laserNoise: {fileID: 8300000, guid: a154e03d702ad7e468620ae1c1ccd103, type: 3}
+  deathNoise: {fileID: 8300000, guid: f6fd73a05a112f749b75026bb62950f7, type: 3}
+  spawnNoise: {fileID: 8300000, guid: 4f39a76dc7ce9fc48a8a27a33f029ecc, type: 3}
   visuals: {fileID: 2688338932734888122}
 --- !u!114 &8798017727898238622
 MonoBehaviour:

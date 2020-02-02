@@ -21,6 +21,7 @@ public class CuboController : Selectable
 	//visuals
 	[Header( "Visuals" )]
 	public GameObject model;
+    public AudioClip spawnNoise;
 
 	//moving
 	[Header( "Movement" )]
@@ -47,9 +48,11 @@ public class CuboController : Selectable
 		m_navAgent = GetComponent<NavMeshAgent>();
 
 		SpawnAnim();
+        Camera.main.GetComponent<AudioSource>().PlayOneShot( spawnNoise );
+
     }
 
-	public void SpawnAnim()
+    public void SpawnAnim()
 	{
 		model.transform.localScale = Vector3.zero;
 		Sequence seq = DOTween.Sequence();

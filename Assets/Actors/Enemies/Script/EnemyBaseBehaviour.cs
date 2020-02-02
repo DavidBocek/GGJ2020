@@ -13,6 +13,7 @@ public class EnemyBaseBehaviour : MonoBehaviour
     public Transform spawnPos;
     public GameObject EnemyPrefab;
     public GameObject BomberPrefab;
+    public AudioClip spawnNoise;
 
 	public EnemySpawnTimerUI timerUI;
 
@@ -24,6 +25,7 @@ public class EnemyBaseBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Camera.main.GetComponent<AudioSource>().PlayOneShot( spawnNoise );
         m_nextSpawnTime = Time.time + timeBetweenWaves;
         m_isActive = true;
 		m_rand = Random.Range( 0, bomberWavePer );

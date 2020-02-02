@@ -584,6 +584,7 @@ Transform:
   - {fileID: 123198641}
   - {fileID: 8093210095395569530}
   - {fileID: 2479081713487592667}
+  - {fileID: 5823104459573324692}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -622,6 +623,8 @@ MonoBehaviour:
   - {fileID: 709631739449201221}
   smokeCount: 1
   smokeCountRandAdd: 1
+  center: {fileID: 5823104459573324692}
+  orbitRadius: 15
   healPerWork: 10
   top: {fileID: 3016704073282791627}
   barrel: {fileID: 1442743954068242049}
@@ -639,6 +642,9 @@ MonoBehaviour:
   attackLaserEndWidth: 0.1
   muzzlePos: {fileID: 4511966973876917723}
   muzzleFx: {fileID: 4510119854792521645}
+  turretLaserNoise: {fileID: 8300000, guid: 185bcd28fdebfce45a8d1d58de7eef24, type: 3}
+  turretOnline: {fileID: 8300000, guid: 0b3b107c931a0d042a86fff13dedf3a7, type: 3}
+  turretExplode: {fileID: 8300000, guid: f09ee5c20b3c3ff45abccbd7084212fc, type: 3}
 --- !u!65 &3080752698822262224
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -933,6 +939,36 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &5359526209826302721
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5823104459573324692}
+  m_Layer: 10
+  m_Name: CenterPt
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5823104459573324692
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5359526209826302721}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1442743952819778307}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5473653545058053787
 GameObject:
   m_ObjectHideFlags: 0
@@ -1139,11 +1175,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8874710729073586358, guid: f0ea075c62ad64e418243803f3e8f517,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0ea075c62ad64e418243803f3e8f517, type: 3}
@@ -1539,6 +1570,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+        type: 3}
+      propertyPath: m_Parameters.widthMultiplier
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.r
+      value: 0.99215686
+      objectReference: {fileID: 0}
+    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.g
+      value: 0.6315757
+      objectReference: {fileID: 0}
+    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.b
+      value: 0.0039215623
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe5720226e2385c4a8aeb6ee1941f8e0, type: 3}

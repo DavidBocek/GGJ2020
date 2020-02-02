@@ -36,6 +36,10 @@ public class TurretController : OrderableTarget
 	public Transform muzzlePos;
 	public GameObject muzzleFx;
 
+    public AudioClip turretLaserNoise;
+    public AudioClip turretOnline;
+    public AudioClip turretExplode;
+
 	void Start()
     {
 		InitWorkTargets();
@@ -182,6 +186,7 @@ public class TurretController : OrderableTarget
 		if ( enemyHealth == null )
 			yield return 0f;
 		enemyHealth.TakeDamage( attackDamage );
+        PlaySound( turretLaserNoise );
 
 		Vector3 targetPos = target.transform.position;
 		float startTime = Time.time;
@@ -216,4 +221,21 @@ public class TurretController : OrderableTarget
 		base.OnWork( user );
 		m_health.Heal( healPerWork );
 	}
+
+    public override void OnRevive()
+    {
+        base.OnRevive();
+        PlaySound( turretOnline );
+    }
+
+    public override void OnDeath()
+    {
+        base.OnDeath();
+        PlaySound( turretExplode );
+    }
+
+    private void PlaySound( AudioClip sound )
+    {
+        Camera.main.GetComponent<AudioSource>().PlayOneShot( sound );
+    }
 }

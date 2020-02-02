@@ -24,6 +24,11 @@ public class EnemyBehaviour : MonoBehaviour
     public float attackLaserTime;
     public float attackLaserEndWidth;
 
+	[Header( "Sounds" )]
+	public AudioClip laserNoise;
+	public AudioClip deathNoise;
+	public AudioClip spawnNoise;
+
     public GameObject visuals;
 
     private enum eAIState
@@ -45,6 +50,7 @@ public class EnemyBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+		PlaySound( spawnNoise );
         EnterState( eAIState.MOVE_TO_LINE );
     }
 
@@ -180,7 +186,7 @@ public class EnemyBehaviour : MonoBehaviour
         if ( Time.time >= m_nextGoodAttackTime )
         {
             m_nextGoodAttackTime = Time.time + timeBetweenAttacks;
-            Timing.RunCoroutineSingleton( _PlayAttackFX(), gameObject, "_PlayAttackFX", SingletonBehavior.Overwrite );
+            Timing.RunCoroutineSingleton( _PlayAttackFX().CancelWith(gameObject), gameObject, "_PlayAttackFX", SingletonBehavior.Overwrite );
             DamageTarget();
         }
     }
@@ -198,8 +204,8 @@ public class EnemyBehaviour : MonoBehaviour
     private void GetRandomTarget()
     {
         m_target = m_potentialTargets[Random.Range( 0, m_potentialTargets.Count )];
-        m_stoppingDistance = m_target.GetComponent<BuildingController>().GetOrbitRadius() + Random.Range(-3f, 3f);
-        m_orbitCenterPoint = m_target.GetComponent<BuildingController>().GetOrbitCenter();
+        m_stoppingDistance = m_target.GetComponent<OrderableTarget>().GetOrbitRadius() + Random.Range(-3f, 3f);
+        m_orbitCenterPoint = m_target.GetComponent<OrderableTarget>().GetOrbitCenter();
     }
 
     private void CompensateForNearbyUnits()
@@ -239,6 +245,8 @@ public class EnemyBehaviour : MonoBehaviour
 
         targetPos += offset;
 
+		PlaySound( laserNoise );
+
         while ( Time.time < startTime + attackLaserTime )
         {
             if ( m_currentState != eAIState.ATTACK )
@@ -259,6 +267,12 @@ public class EnemyBehaviour : MonoBehaviour
 
     public void OnDeath()
 	{
+		PlaySound( deathNoise );
 		Destroy( gameObject );
+	}
+
+	private void PlaySound(AudioClip clip)
+	{
+		Camera.main.GetComponent<AudioSource>().PlayOneShot( clip );
 	}
 }
