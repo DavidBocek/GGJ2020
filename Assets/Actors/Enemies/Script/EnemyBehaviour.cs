@@ -6,8 +6,11 @@ public class EnemyBehaviour : MonoBehaviour
 {
 
     [Header("Gameplay")]
-    public GameObject target;
     public float moveSpeed;
+    public float stoppingDistance;
+    public float slerpScale = 30.0f;
+    public float timeBetweenAttacks;
+    public int attackDamage;
 
     private enum eAIState
     {
@@ -17,11 +20,27 @@ public class EnemyBehaviour : MonoBehaviour
     }
 
     private eAIState m_currentState;
+    private GameObject m_target;
+    private List<GameObject> m_potentialTargets;
+    private float m_nextGoodAttackTime;
 
     // Start is called before the first frame update
     void Start()
     {
         EnterState( eAIState.MOVE_TO_LINE );
+    }
+
+    private void UpdateTargetList()
+    {
+        m_potentialTargets = new List<GameObject>( GameObject.FindGameObjectsWithTag( "Building" ) );
+
+        foreach( GameObject target in new List<GameObject>( m_potentialTargets ) )
+        {
+            if ( ! target.GetComponent<Health>().IsAlive() )
+            {
+                m_potentialTargets.Remove( target );
+            }
+        }
     }
 
     private void EnterState( eAIState newState )
@@ -47,6 +66,7 @@ public class EnemyBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UpdateTargetList();
         UpdateState();
         Act();
     }
@@ -55,20 +75,69 @@ public class EnemyBehaviour : MonoBehaviour
     {
         switch ( m_currentState )
         {
-            case eAIState.IDLE:
-                if ( m_canSeePlayer && Time.time > m_forceIdleUntilTime )
+            case eAIState.MOVE_TO_TARGET:
+                if ( Vector3.Distance( gameObject.transform.position, m_target.transform.position) < stoppingDistance )
                 {
-                    EnterState( eMeleeAIState.MOVING );
-                }
-                //m_animator.SetBool( "IsMoving", false );
-                break;
-            case eAIState.MOVING:
-                if ( m_transitionToIdle )
-                {
-                    m_transitionToIdle = false;
-                    EnterState( eMeleeAIState.IDLE );
+                    EnterState( eAIState.ATTACK );
                 }
                 break;
+            case eAIState.ATTACK:
+                if ( ! IsTargetAlive() )
+                {
+                    EnterState( eAIState.MOVE_TO_TARGET );
+                }
+                break;
+        }
+    }
+
+    private void Act()
+    {
+        if ( ! m_target.GetComponent<Health>().IsAlive() )
+        {
+            m_target = m_potentialTargets[Random.Range( 0, m_potentialTargets.Count )];
+        }
+
+        switch ( m_currentState )
+        {
+            case eAIState.MOVE_TO_LINE:
+                transform.position += transform.forward * ( moveSpeed * Time.deltaTime );
+                break;
+            case eAIState.MOVE_TO_TARGET:
+                Vector3 vecToTarget = m_target.transform.position - transform.position;
+                transform.rotation = Quaternion.Slerp( transform.rotation, Quaternion.LookRotation( vecToTarget, Vector3.up ), 0.5f * Time.deltaTime * slerpScale );
+                transform.position += transform.forward * ( moveSpeed * Time.deltaTime );
+                break;
+            case eAIState.ATTACK:
+                TryAttackTarget();
+                break;
+        }
+    }
+
+    public void OnTriggerEnter( Collider other )
+    {
+        if ( other.gameObject.name == "TheLine" )
+        {
+            EnterState( eAIState.MOVE_TO_TARGET );
+        }
+    }
+
+    private bool IsTargetAlive()
+    {
+        return m_target.GetComponent<Health>().IsAlive();
+    }
+
+    private void DamageTarget()
+    {
+        m_target.GetComponent<Health>().TakeDamage( attackDamage );
+    }
+
+    private void TryAttackTarget()
+    {
+        if ( Time.time >= m_nextGoodAttackTime )
+        {
+            m_nextGoodAttackTime = Time.time + timeBetweenAttacks;
+            // attack anim stuff
+            DamageTarget();
         }
     }
 }
