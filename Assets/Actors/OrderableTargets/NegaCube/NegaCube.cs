@@ -26,11 +26,6 @@ public class NegaCube : OrderableTarget
 	{	
 		UIStatic.SetInt( UIStatic.CUR_SACRIFICE, power );
 
-		//todo remove
-		if ( Input.GetKeyDown( KeyCode.W ) )
-			PlayerCommands.Get().Win();
-		else if ( Input.GetKeyDown( KeyCode.L ) )
-			PlayerCommands.Get().Lose();
 	}
 
 	public override void ClaimWorkTarget( WorkTarget workTarget )
@@ -80,6 +75,10 @@ public class NegaCube : OrderableTarget
 		foreach ( GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
 		{
 			enemy.GetComponent<Health>().TakeDamage( 10000 );
+		}
+		foreach ( GameObject enemySpawner in GameObject.FindGameObjectsWithTag("EnemyBase"))
+		{
+			Destroy( enemySpawner.gameObject );
 		}
 	}
 }

@@ -10,6 +10,7 @@ TagManager:
   - Turret
   - NoTurretZone
   - MusicPlayer
+  - EnemyBase
   layers:
   - Default
   - TransparentFX
