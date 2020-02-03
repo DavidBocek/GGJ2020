@@ -65,8 +65,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1536
   maxCubos: 30
-  startingMoney: 100
-  maxMoney: 10000
+  startingMoney: 0
+  maxMoney: 2000
   uiMoneyPerSecond: 250
   moveOrderUIPrefab: {fileID: 4485796440636321007, guid: a37a26b9f1efad24a967f8492058d9fa,
     type: 3}
@@ -84,7 +84,7 @@ MonoBehaviour:
     type: 3}
   turretObj: {fileID: 1442743952819778332, guid: c4cb899142e0e324fb00b5a42a480cd6,
     type: 3}
-  addTurretCost: 100
+  addTurretCost: 300
   turretGhostGridGranularity: 3
   isAddingTurret: 0
   lastAddingTurretTime: 0
@@ -95,3 +95,4 @@ MonoBehaviour:
   turretGhostInvalidMat: {fileID: 2100000, guid: d6c99f3f5a1fddb4e99564879175101f,
     type: 2}
   winLoseUI: {fileID: 0}
+  isEnding: 0

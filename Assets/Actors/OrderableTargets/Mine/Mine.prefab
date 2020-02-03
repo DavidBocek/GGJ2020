@@ -2858,7 +2858,9 @@ MonoBehaviour:
   smokeFxSpots: []
   smokeCount: 0
   smokeCountRandAdd: 0
-  moneyPerWork: 10
+  center: {fileID: 0}
+  orbitRadius: 0
+  moneyPerWork: 15
   moneyNoise: {fileID: 8300000, guid: 58045406682600e4798725f90cc5499f, type: 3}
 --- !u!65 &4028654574282107399
 BoxCollider:

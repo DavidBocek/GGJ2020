@@ -53,8 +53,8 @@ MonoBehaviour:
   moveSpeed: 30
   angularVelocity: 0.7
   slerpScale: 10
-  timeBetweenAttacks: 4
-  attackDamage: 2
+  timeBetweenAttacks: 5
+  attackDamage: 50
   tooCloseThreshold: 10
   targetTags:
   - Building

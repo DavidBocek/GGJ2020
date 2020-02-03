@@ -133,6 +133,8 @@ public class PlayerCommands : MonoBehaviour
 					break;
 				case "OrderableCollision":
 					OrderableTarget target = hitInfo.collider.gameObject.GetComponentInChildren<OrderableTarget>();
+					if ( target == null )
+						break;
 
 					List<Selectable> workingUnits = new List<Selectable>();
 					foreach ( Selectable selectable in Selection.GetSelected() )

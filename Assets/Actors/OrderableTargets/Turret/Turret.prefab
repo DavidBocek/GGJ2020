@@ -625,7 +625,7 @@ MonoBehaviour:
   smokeCountRandAdd: 1
   center: {fileID: 5823104459573324692}
   orbitRadius: 15
-  healPerWork: 10
+  healPerWork: 15
   top: {fileID: 3016704073282791627}
   barrel: {fileID: 1442743954068242049}
   idleTopTarget: {x: 0, y: 0, z: 1}
@@ -672,7 +672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d02b2f1c001e284429446326e16a648a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
+  maxHealth: 250
   healthFracNeededToBeAlive: 0.5
   healthbar: {fileID: 7519831228902388087}
 --- !u!208 &7677414561494951096
@@ -1068,6 +1068,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1442743952819778307}
     m_Modifications:
+    - target: {fileID: 8515704259333293265, guid: f0ea075c62ad64e418243803f3e8f517,
+        type: 3}
+      propertyPath: m_Name
+      value: HealthbarCanvas
+      objectReference: {fileID: 0}
     - target: {fileID: 6242556335158062518, guid: f0ea075c62ad64e418243803f3e8f517,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1172,11 +1177,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8515704259333293265, guid: f0ea075c62ad64e418243803f3e8f517,
-        type: 3}
-      propertyPath: m_Name
-      value: HealthbarCanvas
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0ea075c62ad64e418243803f3e8f517, type: 3}
@@ -1508,25 +1508,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1442743952819778307}
     m_Modifications:
-    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+    - target: {fileID: 1336694382924207529, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
         type: 3}
-      propertyPath: m_Parameters.widthMultiplier
-      value: 0.75
+      propertyPath: m_Name
+      value: TurretLaser
       objectReference: {fileID: 0}
-    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+    - target: {fileID: 1336694382924207529, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
         type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.r
-      value: 0.99215686
-      objectReference: {fileID: 0}
-    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.g
-      value: 0.6315757
-      objectReference: {fileID: 0}
-    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.b
-      value: 0.0039215623
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1653540697418055937, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
         type: 3}
@@ -1583,15 +1573,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1336694382924207529, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
         type: 3}
-      propertyPath: m_Name
-      value: TurretLaser
+      propertyPath: m_Parameters.widthMultiplier
+      value: 0.75
       objectReference: {fileID: 0}
-    - target: {fileID: 1336694382924207529, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: m_Parameters.colorGradient.key0.r
+      value: 0.99215686
+      objectReference: {fileID: 0}
+    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.g
+      value: 0.6315757
+      objectReference: {fileID: 0}
+    - target: {fileID: 1629104944074205559, guid: fe5720226e2385c4a8aeb6ee1941f8e0,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.b
+      value: 0.0039215623
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe5720226e2385c4a8aeb6ee1941f8e0, type: 3}
