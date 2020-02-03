@@ -440,10 +440,10 @@ public class PlayerCommands : MonoBehaviour
 	public void UpdateMoney()
 	{
 		//TODO REMOVE ME
-		if ( Input.GetKeyDown( KeyCode.O ) )
+		/*if ( Input.GetKeyDown( KeyCode.O ) )
 			AddMoney( 50 );
 		else if ( Input.GetKeyDown( KeyCode.I ) )
-			TakeMoney( 50 );
+			TakeMoney( 50 );*/
 
 
 		if (m_curUIMoney != m_curMoney)

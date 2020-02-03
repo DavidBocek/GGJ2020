@@ -15,11 +15,12 @@ public class EnemyBrain : MonoBehaviour
 		public bool completed = false;
 	}
 	public List<EnemySpawnerSpawn> spawnerSpawns;
+	private float m_startTime;
 	
 
     void Start()
     {
-        
+		m_startTime = Time.time;
     }
 
     void Update()
@@ -36,7 +37,7 @@ public class EnemyBrain : MonoBehaviour
 				continue;
 			}
 
-			if (Time.time > spawner.time)
+			if (Time.time > spawner.time + m_startTime)
 			{
 				Transform loc = spawnLocs[Random.Range( 0, spawnLocs.Count )];
 				Instantiate( spawner.spawnerObj, loc.position, Quaternion.identity );
