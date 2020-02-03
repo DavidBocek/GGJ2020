@@ -64,7 +64,7 @@ MonoBehaviour:
   orderLayerMask:
     serializedVersion: 2
     m_Bits: 1536
-  maxCubos: 30
+  maxCubos: 20
   startingMoney: 0
   maxMoney: 2000
   uiMoneyPerSecond: 250
@@ -77,14 +77,15 @@ MonoBehaviour:
   moveDistScoreMultiplier: 10
   moveAngleScoreMultiplier: 200
   cuboObj: {fileID: 7284984851870874222, guid: 895a6ba778c3f2c43a7375c4f18aa940, type: 3}
-  addCuboCost: 50
+  addCuboCost: 75
   addCuboPos: {fileID: 0}
   addCuboPosRand: 11.5
   turretGhostObj: {fileID: 4602485419976744311, guid: 02b49b98b8eaa884abff93f808d2ebe9,
     type: 3}
   turretObj: {fileID: 1442743952819778332, guid: c4cb899142e0e324fb00b5a42a480cd6,
     type: 3}
-  addTurretCost: 300
+  addTurretCostStart: 200
+  addTurretCostIncreasePerTurret: 200
   turretGhostGridGranularity: 3
   isAddingTurret: 0
   lastAddingTurretTime: 0

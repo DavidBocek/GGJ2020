@@ -347,7 +347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03a66638c9d38d844bc4dfefe39edc7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeBetweenWaves: 8
+  timeBetweenWaves: 14
   enemiesPerWave: 2
   bombersAvailable: 0
   bomberWavePer: 4

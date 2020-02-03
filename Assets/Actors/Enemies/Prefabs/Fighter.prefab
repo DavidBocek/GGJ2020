@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dfa9f5bb53d56d429a2808e55e1101b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 50
+  moveSpeed: 20
   angularVelocity: 1
   slerpScale: 10
   timeBetweenAttacks: 2
@@ -83,6 +83,7 @@ MonoBehaviour:
   maxHealth: 100
   healthFracNeededToBeAlive: 0.2
   healthbar: {fileID: 0}
+  deathFX: {fileID: 8604753199579881138, guid: 2946bea4c27114c4897c9f5a2010ab48, type: 3}
 --- !u!54 &1953354094
 Rigidbody:
   m_ObjectHideFlags: 0

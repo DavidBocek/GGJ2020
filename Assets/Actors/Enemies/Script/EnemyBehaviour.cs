@@ -52,6 +52,8 @@ public class EnemyBehaviour : MonoBehaviour
     {
 		PlaySound( spawnNoise );
         EnterState( eAIState.MOVE_TO_LINE );
+		UpdateTargetList();
+		GetRandomTarget();
     }
 
     private void UpdateTargetList()
@@ -61,29 +63,29 @@ public class EnemyBehaviour : MonoBehaviour
 		{
 			foreach ( GameObject obj in GameObject.FindGameObjectsWithTag( tag ) )
 			{
-				m_potentialTargets.Add( obj );
+				Health health = obj.GetComponent<Health>();
+				if ( health != null && health.IsAlive() )
+				{
+					m_potentialTargets.Add( obj );
+				}
 			}
+			if ( m_potentialTargets.Count > 0 )
+				break;
 		}
-
-		List<GameObject> targetsCopy = new List<GameObject>( m_potentialTargets );
-		foreach ( GameObject target in  targetsCopy)
-        {
-			Health health = target.GetComponent<Health>();
-            if ( health == null || !health.IsAlive() )
-            {
-                m_potentialTargets.Remove( target );
-            }
-        }
 
 		if (m_potentialTargets.Count == 0)
 		{
 			GameObject[] objs = GameObject.FindGameObjectsWithTag( targetTags[0] );
 			m_potentialTargets.Add(objs[Random.Range( 0, objs.Length )]);
 		}
-        if ( m_target == null )
+        /*if ( m_target == null )
         {
             GetRandomTarget();
+			return;
         }
+		Health targetHealth = m_target.GetComponent<Health>();
+		if ( targetHealth == null || !targetHealth.IsAlive() )
+			GetRandomTarget();*/
     }
     
     private void EnterState( eAIState newState )
@@ -112,34 +114,44 @@ public class EnemyBehaviour : MonoBehaviour
 
     private void UpdateState()
     {
-        m_vecToTarget = m_orbitCenterPoint.position - transform.position;
-        m_vecToTarget.y = 0;
-        m_vecToTarget.Normalize();
+		m_vecToTarget = m_orbitCenterPoint.position - transform.position;
+		m_vecToTarget.y = 0;
+		m_vecToTarget.Normalize();
 
-        switch ( m_currentState )
+		switch ( m_currentState )
         {
             case eAIState.MOVE_TO_TARGET:
                 if ( Vector3.Distance( gameObject.transform.position, m_orbitCenterPoint.position) < m_stoppingDistance )
                 {
                     EnterState( eAIState.ATTACK );
                 }
-                break;
+				if ( !IsTargetAlive() )
+				{
+					GetRandomTarget();
+				}
+				break;
             case eAIState.ATTACK:
                 if ( ! IsTargetAlive() )
                 {
+					GetRandomTarget();
                     EnterState( eAIState.MOVE_TO_TARGET );
                 }
                 break;
-        }
-    }
+			case eAIState.MOVE_TO_LINE:
+				if ( !IsTargetAlive() )
+				{
+					GetRandomTarget();
+				}
+				break;
+		}
+
+		m_vecToTarget = m_orbitCenterPoint.position - transform.position;
+		m_vecToTarget.y = 0;
+		m_vecToTarget.Normalize();
+	}
 
     private void Act()
     {
-        if ( ! m_target.GetComponent<Health>().IsAlive() )
-        {
-            GetRandomTarget();
-        }
-
         switch ( m_currentState )
         {
             case eAIState.MOVE_TO_LINE:

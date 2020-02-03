@@ -1373,7 +1373,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1584089913}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -1503,6 +1503,8 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'Earn money by mining with cubes.
+
+    The mine has diminishing returns.
 
     Use money to buy cubes and turrets.'
 --- !u!222 &1621354465

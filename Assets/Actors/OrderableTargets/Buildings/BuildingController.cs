@@ -39,5 +39,18 @@ public class BuildingController : OrderableTarget
     {
 		base.OnDeath();
         Camera.main.GetComponent<AudioSource>().PlayOneShot( explodeNoise );
+		bool lose = true;
+		foreach ( GameObject obj in GameObject.FindGameObjectsWithTag("Building"))
+		{
+			if (obj.GetComponent<Health>().IsAlive())
+			{
+				lose = false;
+				break;
+			}
+		}
+		if (lose)
+		{
+			PlayerCommands.Get().Lose();
+		}
     }
 }

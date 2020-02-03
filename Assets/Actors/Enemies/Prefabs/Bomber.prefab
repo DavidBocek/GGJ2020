@@ -50,15 +50,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dfa9f5bb53d56d429a2808e55e1101b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 30
+  moveSpeed: 14
   angularVelocity: 0.7
   slerpScale: 10
   timeBetweenAttacks: 5
   attackDamage: 50
   tooCloseThreshold: 10
   targetTags:
-  - Building
   - Turret
+  - Building
   muzzlePos: {fileID: 2999486273702408661}
   laserFx: {fileID: 4467298903194589893}
   attackForwardRand: 4
@@ -81,9 +81,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d02b2f1c001e284429446326e16a648a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 150
   healthFracNeededToBeAlive: 0.2
   healthbar: {fileID: 0}
+  deathFX: {fileID: 8604753199579881138, guid: b654f11cd113de74db1179bdd1293193, type: 3}
 --- !u!54 &1953354094
 Rigidbody:
   m_ObjectHideFlags: 0

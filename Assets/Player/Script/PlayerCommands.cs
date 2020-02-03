@@ -47,7 +47,8 @@ public class PlayerCommands : MonoBehaviour
 	[Header( "AddTurret" )]
 	public GameObject turretGhostObj;
 	public GameObject turretObj;
-	public int addTurretCost;
+	public int addTurretCostStart;
+	public int addTurretCostIncreasePerTurret;
 	public int turretGhostGridGranularity;
 	private List<BoxCollider> m_noTurretZones = new List<BoxCollider>();
 	[HideInInspector]
@@ -91,6 +92,13 @@ public class PlayerCommands : MonoBehaviour
 		UpdateMoney();
 		UpdateCubos();
 		UpdateTurretAdding();
+
+		//todo remove
+		if ( Input.GetKeyDown(KeyCode.O))
+		{
+			Time.timeScale = Time.timeScale == 1.0f ? 3.0f : 1.0f;
+		}
+
 	}
 
 	#region orders
@@ -133,8 +141,6 @@ public class PlayerCommands : MonoBehaviour
 					break;
 				case "OrderableCollision":
 					OrderableTarget target = hitInfo.collider.gameObject.GetComponentInChildren<OrderableTarget>();
-					if ( target == null )
-						break;
 
 					List<Selectable> workingUnits = new List<Selectable>();
 					foreach ( Selectable selectable in Selection.GetSelected() )
@@ -603,7 +609,8 @@ public class PlayerCommands : MonoBehaviour
 
 	public bool TryAddTurret()
 	{
-		if ( m_curMoney < addTurretCost )
+
+		if ( m_curMoney < GetCurTurretCost() )
 		{
 			return false;
 		}
@@ -630,10 +637,15 @@ public class PlayerCommands : MonoBehaviour
 
 	private void PlaceTurret( Vector3 pos )
 	{
-		if ( m_curMoney >= addTurretCost )
+		if ( m_curMoney >= GetCurTurretCost() )
 			Instantiate( turretObj, pos, Quaternion.identity );
 		StopAddingTurret();
-		TakeMoney( addTurretCost );
+		TakeMoney( GetCurTurretCost() );
+	}
+
+	public int GetCurTurretCost()
+	{
+		return addTurretCostStart + ( GameObject.FindGameObjectsWithTag( "Turret" ).Length - 1 ) * addTurretCostIncreasePerTurret;
 	}
 
 	#endregion
@@ -648,10 +660,10 @@ public class PlayerCommands : MonoBehaviour
 		isEnding = true;
 
 		winLoseUI.OnLose();
-		Timing.RunCoroutineSingleton( _End(false),Segment.RealtimeUpdate, "_End", SingletonBehavior.Abort );
+		Timing.RunCoroutineSingleton( _Lose(),Segment.RealtimeUpdate, "_End", SingletonBehavior.Abort );
 	}
 
-	private IEnumerator<float> _End(bool win)
+	private IEnumerator<float> _Lose()
 	{
 		for (float t=0f; t<=1f; t+=(Time.unscaledDeltaTime/ winLoseUI.fadeDur ) )
 		{
@@ -660,10 +672,7 @@ public class PlayerCommands : MonoBehaviour
 		}
 		Time.timeScale = 0.2f;
 		yield return Timing.WaitForSeconds( 4f );
-		if ( win )
-			SceneManager.LoadScene( "MainMenu" );
-		else
-			SceneManager.LoadScene( "BananaTest" );
+		SceneManager.LoadScene( "BananaTest" );
 	}
 
 	public void Win()
@@ -672,8 +681,17 @@ public class PlayerCommands : MonoBehaviour
 			return;
 		isEnding = true;
 
+		GameObject.Find( "NegaCube" ).GetComponent<NegaCube>().OnWin();
+		Timing.RunCoroutineSingleton( _Win(),Segment.RealtimeUpdate, "_End", SingletonBehavior.Abort );
+	}
+
+	private IEnumerator<float> _Win( )
+	{
+		yield return 3f;
 		winLoseUI.OnWin();
-		Timing.RunCoroutineSingleton( _End(true),Segment.RealtimeUpdate, "_End", SingletonBehavior.Abort );
+		yield return Timing.WaitForSeconds( winLoseUI.fadeDur );
+		yield return Timing.WaitForSeconds( 6f );
+		SceneManager.LoadScene( "MainMenu" );
 	}
 
 

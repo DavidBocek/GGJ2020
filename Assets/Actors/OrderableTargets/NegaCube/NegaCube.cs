@@ -13,6 +13,8 @@ public class NegaCube : OrderableTarget
 
     public AudioClip sacrificeNoise;
 
+	public GameObject winParticles;
+
 	void Start()
     {
 		InitWorkTargets();
@@ -24,6 +26,7 @@ public class NegaCube : OrderableTarget
 	{	
 		UIStatic.SetInt( UIStatic.CUR_SACRIFICE, power );
 
+		//todo remove
 		if ( Input.GetKeyDown( KeyCode.W ) )
 			PlayerCommands.Get().Win();
 		else if ( Input.GetKeyDown( KeyCode.L ) )
@@ -38,7 +41,7 @@ public class NegaCube : OrderableTarget
 	{
 	}
 
-	public override void LeaveWorkTarget( WorkTarget workTarget )
+	public override void LeaveWorkTarget( WorkTarget workTarget, CuboController user )
 	{
 	}
 
@@ -67,5 +70,16 @@ public class NegaCube : OrderableTarget
 			if ( power >= goalPower )
 				PlayerCommands.Get().Win();
 		} );
+	}
+
+	public void OnWin()
+	{
+		Instantiate( winParticles, transform.position + Vector3.up * 17f, Quaternion.LookRotation( Vector3.up, Vector3.left ) );
+		transform.DOLocalRotate( Vector3.up * -45f, 2f ).SetEase( Ease.InOutQuad ).SetLoops( -1, LoopType.Yoyo );
+
+		foreach ( GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+		{
+			enemy.GetComponent<Health>().TakeDamage( 10000 );
+		}
 	}
 }

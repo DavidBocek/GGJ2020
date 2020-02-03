@@ -634,7 +634,7 @@ MonoBehaviour:
   idleBarrelSpeed: 30
   engageDist: 60
   attackDamage: 50
-  attackCooldown: 1.5
+  attackCooldown: 2.5
   laserFx: {fileID: 2453977459154572461}
   attackForwardRand: 0.75
   attackRightRand: 1

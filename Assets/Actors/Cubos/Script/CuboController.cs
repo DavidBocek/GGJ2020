@@ -177,7 +177,7 @@ public class CuboController : Selectable
 	{
 		if ( m_orderableTarget != null )
 		{
-			m_orderableTarget.LeaveWorkTarget( m_workTarget );
+			m_orderableTarget.LeaveWorkTarget( m_workTarget, this );
 			m_workTarget = null;
 			m_orderableTarget = null;
 		}
@@ -190,7 +190,7 @@ public class CuboController : Selectable
 	public override void OrderOrderableTarget( OrderableTarget target, WorkTarget workTarget )
 	{
 		if ( m_orderableTarget != null )
-			m_orderableTarget.LeaveWorkTarget( m_workTarget );
+			m_orderableTarget.LeaveWorkTarget( m_workTarget, this );
 
 		m_orderableTarget = target;
 		m_orderableTarget.ClaimWorkTarget( workTarget );

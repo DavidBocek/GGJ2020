@@ -19,6 +19,8 @@ public class OrderableTarget : MonoBehaviour
 		int id = 0;
 		foreach( GameObject obj in workTargetObjs )
 		{
+			if ( !obj.active )
+				continue;
 			WorkTarget target = new WorkTarget();
 			target.id = id++;
 			target.state = WorkTarget.WorkTargetState.CLEAR;
@@ -55,7 +57,7 @@ public class OrderableTarget : MonoBehaviour
 		workTarget.renderer.material.color = occupiedWorkTargetColor;
 	}
 
-	public virtual void LeaveWorkTarget( WorkTarget workTarget )
+	public virtual void LeaveWorkTarget( WorkTarget workTarget, CuboController user )
 	{
 		workTarget.state = WorkTarget.WorkTargetState.CLEAR;
 		workTarget.renderer.material.color = clearWorkTargetColor;

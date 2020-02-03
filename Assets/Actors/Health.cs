@@ -9,6 +9,8 @@ public class Health : MonoBehaviour
 
 	public Healthbar healthbar;
 
+	public GameObject deathFX;
+
     private bool m_isAlive = true;
     private int m_health = 1;
     void OnEnable()
@@ -46,6 +48,9 @@ public class Health : MonoBehaviour
     {
         m_health = Mathf.Max( 0, m_health - damageAmt );
 
+		if ( !IsAlive() )
+			return;
+
 		if ( healthbar != null )
 			healthbar.SetHealthFrac( m_health / (float)maxHealth );
 
@@ -53,6 +58,8 @@ public class Health : MonoBehaviour
         {
             m_isAlive = false;
             gameObject.SendMessage( "OnDeath", SendMessageOptions.DontRequireReceiver );
+			if ( deathFX != null )
+				Instantiate( deathFX, transform.position, transform.rotation );
 
 			if (healthbar != null)
 				healthbar.ShowRestoreBar( true, healthFracNeededToBeAlive );

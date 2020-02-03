@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 7497269880948986185, guid: a4a27053e7cfd4647bec8d0c8112585c,
         type: 3}
       propertyPath: m_Name
-      value: EnemyBaseBeeg
+      value: EnemyBaseBeeg Variant
       objectReference: {fileID: 0}
     - target: {fileID: 7497269880948986188, guid: a4a27053e7cfd4647bec8d0c8112585c,
         type: 3}
@@ -339,7 +339,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1979709422, guid: a4a27053e7cfd4647bec8d0c8112585c, type: 3}
       propertyPath: timeBetweenWaves
-      value: 11
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 1979709422, guid: a4a27053e7cfd4647bec8d0c8112585c, type: 3}
       propertyPath: enemiesPerWave
@@ -352,6 +352,10 @@ PrefabInstance:
     - target: {fileID: 1979709422, guid: a4a27053e7cfd4647bec8d0c8112585c, type: 3}
       propertyPath: bomberWavePer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1979709422, guid: a4a27053e7cfd4647bec8d0c8112585c, type: 3}
+      propertyPath: bombersPerBomberWave
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3207306234893140196, guid: a4a27053e7cfd4647bec8d0c8112585c,
         type: 3}

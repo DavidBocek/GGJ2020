@@ -1598,4 +1598,42 @@ MonoBehaviour:
   - {fileID: 1539698768}
   - {fileID: 1636237221}
   - {fileID: 1743209641}
-  spawnerSpawns: []
+  spawnerSpawns:
+  - spawnerObj: {fileID: 7497269880948986185, guid: a4a27053e7cfd4647bec8d0c8112585c,
+      type: 3}
+    time: 15
+    completed: 0
+  - spawnerObj: {fileID: 7497269880948986185, guid: a4a27053e7cfd4647bec8d0c8112585c,
+      type: 3}
+    time: 70
+    completed: 0
+  - spawnerObj: {fileID: 665880873533970364, guid: e10c11980deb507468363b37c7e21d24,
+      type: 3}
+    time: 70
+    completed: 0
+  - spawnerObj: {fileID: 7497269880948986185, guid: a4a27053e7cfd4647bec8d0c8112585c,
+      type: 3}
+    time: 50
+    completed: 0
+  - spawnerObj: {fileID: 665880873533970364, guid: e10c11980deb507468363b37c7e21d24,
+      type: 3}
+    time: 45
+    completed: 0
+  - spawnerObj: {fileID: 7497269880948986185, guid: a4a27053e7cfd4647bec8d0c8112585c,
+      type: 3}
+    time: 30
+    completed: 0
+  - spawnerObj: {fileID: 7497269880948986185, guid: a4a27053e7cfd4647bec8d0c8112585c,
+      type: 3}
+    time: 90
+    completed: 0
+  - spawnerObj: {fileID: 665880873533970364, guid: e10c11980deb507468363b37c7e21d24,
+      type: 3}
+    time: 90
+    completed: 0
+  - spawnerObj: {fileID: 0}
+    time: 0
+    completed: 0
+  - spawnerObj: {fileID: 0}
+    time: 0
+    completed: 0
